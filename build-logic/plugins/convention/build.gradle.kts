@@ -1,71 +1,85 @@
+
 plugins {
     `kotlin-dsl`
 }
 
-group = "com.najudoryeong.musicdo.build-logic"
+
+// 프로젝트 빌드를 위한 Java 버전이 JDK 17
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+}
 
 dependencies {
-    compileOnly(libs.android.gradle.plugin)
-    compileOnly(libs.kotlin.gradle.plugin)
-    compileOnly(libs.spotless.gradle.plugin)
-    compileOnly(libs.detekt.gradle.plugin)
-
-    compileOnly(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+    compileOnly(libs.android.gradlePlugin)
+    compileOnly(libs.firebase.crashlytics.gradlePlugin)
+    compileOnly(libs.firebase.performance.gradlePlugin)
+    compileOnly(libs.kotlin.gradlePlugin)
+    compileOnly(libs.ksp.gradlePlugin)
 }
 
 gradlePlugin {
     plugins {
-        register("androidApplication") {
-            id = "musicdo.android.application"
-            implementationClass = "AndroidApplicationConventionPlugin"
-        }
         register("androidApplicationCompose") {
             id = "musicdo.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
-        register("androidLibrary") {
-            id = "musicdo.android.library"
-            implementationClass = "AndroidLibraryConventionPlugin"
+        register("androidApplication") {
+            id = "musicdo.android.application"
+            implementationClass = "AndroidApplicationConventionPlugin"
+        }
+        register("androidApplicationJacoco") {
+            id = "musicdo.android.application.jacoco"
+            implementationClass = "AndroidApplicationJacocoConventionPlugin"
         }
         register("androidLibraryCompose") {
             id = "musicdo.android.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
+        register("androidLibrary") {
+            id = "musicdo.android.library"
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
         register("androidFeature") {
             id = "musicdo.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
         }
-        register("hilt") {
-            id = "musicdo.hilt"
-            implementationClass = "HiltConventionPlugin"
+        register("androidLibraryJacoco") {
+            id = "musicdo.android.library.jacoco"
+            implementationClass = "AndroidLibraryJacocoConventionPlugin"
+        }
+        register("androidTest") {
+            id = "musicdo.android.test"
+            implementationClass = "AndroidTestConventionPlugin"
         }
         register("androidHilt") {
             id = "musicdo.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
-        register("androidBenchmark") {
-            id = "musicdo.android.benchmark"
-            implementationClass = "AndroidBenchmarkConventionPlugin"
+        register("androidRoom") {
+            id = "musicdo.android.room"
+            implementationClass = "AndroidRoomConventionPlugin"
+        }
+        register("androidFirebase") {
+            id = "musicdo.android.application.firebase"
+            implementationClass = "AndroidApplicationFirebaseConventionPlugin"
+        }
+        register("androidFlavors") {
+            id = "musicdo.android.application.flavors"
+            implementationClass = "AndroidApplicationFlavorsConventionPlugin"
         }
         register("androidLint") {
             id = "musicdo.android.lint"
             implementationClass = "AndroidLintConventionPlugin"
         }
-        register("androidSigningConfig") {
-            id = "musicdo.android.signing-config"
-            implementationClass = "AndroidSigningConfigConventionPlugin"
-        }
-        register("spotless") {
-            id = "musicdo.spotless"
-            implementationClass = "SpotlessConventionPlugin"
-        }
-        register("detekt") {
-            id = "musicdo.detekt"
-            implementationClass = "DetektConventionPlugin"
-        }
-        register("firebaseConfig") {
-            id = "musicdo.firebase-config"
-            implementationClass = "FirebaseConfigConventionPlugin"
+        register("jvmLibrary") {
+            id = "musicdo.jvm.library"
+            implementationClass = "JvmLibraryConventionPlugin"
         }
     }
 }

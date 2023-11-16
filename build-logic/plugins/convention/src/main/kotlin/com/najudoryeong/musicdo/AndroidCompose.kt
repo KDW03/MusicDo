@@ -3,23 +3,72 @@ package com.najudoryeong.musicdo
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
-
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /**
- * compose 설정 확장 함수
- * 1. 벡터 드로어블을 지원
- * 2. Compose 활성화 및 컴파일러 버전 설정 및 의존성 설정
+ * Configure Compose-specific options
  */
-internal fun Project.configureAndroidCompose(commonExtension: CommonExtension<*, *, *, *>) =
-    with(commonExtension) {
-        defaultConfig.vectorDrawables.useSupportLibrary = true
-        buildFeatures.compose = true
-        composeOptions.kotlinCompilerExtensionVersion =
-            libs.versions.androidx.compose.compiler.get()
+internal fun Project.configureAndroidCompose(
+    commonExtension: CommonExtension<*, *, *, *, *>,
+) {
+    commonExtension.apply {
+        buildFeatures {
+            compose = true
+        }
+
+        composeOptions {
+            kotlinCompilerExtensionVersion = libs.findVersion("androidxComposeCompiler").get().toString()
+        }
 
         dependencies {
-            val bom = libs.androidx.compose.bom
+            val bom = libs.findLibrary("androidx-compose-bom").get()
             add("implementation", platform(bom))
             add("androidTestImplementation", platform(bom))
+            // Add ComponentActivity to debug manfest
+            add("debugImplementation", libs.findLibrary("androidx.compose.ui.testManifest").get())
+            // Screenshot Tests on JVM
+            add("testImplementation", libs.findLibrary("robolectric").get())
+            add("testImplementation", libs.findLibrary("roborazzi").get())
+        }
+
+        testOptions {
+            unitTests {
+                // For Robolectric
+                isIncludeAndroidResources = true
+            }
         }
     }
+
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions {
+            freeCompilerArgs = freeCompilerArgs + buildComposeMetricsParameters()
+        }
+    }
+}
+
+private fun Project.buildComposeMetricsParameters(): List<String> {
+    val metricParameters = mutableListOf<String>()
+    val enableMetricsProvider = project.providers.gradleProperty("enableComposeCompilerMetrics")
+    val relativePath = projectDir.relativeTo(rootDir)
+
+    val enableMetrics = (enableMetricsProvider.orNull == "true")
+    if (enableMetrics) {
+        val metricsFolder = rootProject.buildDir.resolve("compose-metrics").resolve(relativePath)
+        metricParameters.add("-P")
+        metricParameters.add(
+            "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" + metricsFolder.absolutePath
+        )
+    }
+
+    val enableReportsProvider = project.providers.gradleProperty("enableComposeCompilerReports")
+    val enableReports = (enableReportsProvider.orNull == "true")
+    if (enableReports) {
+        val reportsFolder = rootProject.buildDir.resolve("compose-reports").resolve(relativePath)
+        metricParameters.add("-P")
+        metricParameters.add(
+            "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" + reportsFolder.absolutePath
+        )
+    }
+    return metricParameters.toList()
+}

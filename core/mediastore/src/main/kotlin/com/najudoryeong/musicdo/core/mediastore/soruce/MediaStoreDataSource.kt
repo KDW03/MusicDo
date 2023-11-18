@@ -59,7 +59,7 @@ class MediaStoreDataSource @Inject constructor(private val contentResolver: Cont
                 excludedFolders.map { "%$it%" }.toTypedArray(),
                 buildMediaStoreSortOrder(sortOrder, sortBy),
             )?.use { cursor ->
-                // 쿼리 결과 순회하며 Song객체 ㅅ ㅐㅇ성
+                // 쿼리 결과 순회하며 Song 객체 생성
                 while (cursor.moveToNext()) {
                     val id = cursor.getLong(MediaStore.Audio.Media._ID)
                     val artistId = cursor.getLong(MediaStore.Audio.Media.ARTIST_ID)

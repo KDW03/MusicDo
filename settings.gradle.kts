@@ -18,4 +18,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MusicDo"
 include(":app")
- 
+include(":core:designsystem")

@@ -25,14 +25,14 @@ plugins {
 }
 
 android {
-    namespace = "com.najudoryeong.mineme"
+    namespace = "com.najudoryeong.musicdo"
 
     defaultConfig {
-        applicationId = "com.najudoryeong.mineme"
+        applicationId = "com.najudoryeong.musicdo"
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "com.najudoryeong.mineme.core.testing.DoTestRunner"
+        testInstrumentationRunner = "com.najudoryeong.musicdo.core.testing.DoTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -41,14 +41,14 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix = DoBuildType.DEBUG.applicationIdSuffix
-            manifestPlaceholders["appName"] = "Mineme (Debug)"
+            manifestPlaceholders["appName"] = "musicdo (Debug)"
         }
         val release by getting {
             isMinifyEnabled = true
             applicationIdSuffix = DoBuildType.RELEASE.applicationIdSuffix
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("debug")
-            manifestPlaceholders["appName"] = "Mineme"
+            manifestPlaceholders["appName"] = "musicdo"
         }
         create("benchmark") {
             initWith(release)
@@ -57,7 +57,7 @@ android {
             proguardFiles("benchmark-rules.pro")
             isMinifyEnabled = true
             applicationIdSuffix = DoBuildType.BENCHMARK.applicationIdSuffix
-            manifestPlaceholders["appName"] = "Mineme (Benchmark)"
+            manifestPlaceholders["appName"] = "musicdo (Benchmark)"
         }
     }
 

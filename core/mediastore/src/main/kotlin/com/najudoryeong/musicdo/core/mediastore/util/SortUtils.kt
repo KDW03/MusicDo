@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.core.mediastore.util
 
 import android.provider.MediaStore
@@ -15,7 +31,7 @@ internal fun buildMediaStoreSortOrder(sortOrder: SortOrder, sortBy: SortBy): Str
 
 private val mediaStoreSortOrderMap = mapOf(
     SortOrder.ASCENDING to "ASC",
-    SortOrder.DESCENDING to "DESC"
+    SortOrder.DESCENDING to "DESC",
 )
 
 private val mediaStoreSortByMap = mapOf(
@@ -23,5 +39,5 @@ private val mediaStoreSortByMap = mapOf(
     SortBy.ARTIST to MediaStore.Audio.Media.ARTIST,
     SortBy.ALBUM to MediaStore.Audio.Media.ALBUM,
     SortBy.DURATION to MediaStore.Audio.Media.DURATION,
-    SortBy.DATE to MediaStore.Audio.Media.DATE_ADDED
+    SortBy.DATE to MediaStore.Audio.Media.DATE_ADDED,
 )

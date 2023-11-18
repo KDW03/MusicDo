@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.core.mediastore.soruce
 
 import android.content.ContentResolver
@@ -28,7 +44,7 @@ class MediaStoreDataSource @Inject constructor(private val contentResolver: Cont
         sortOrder: SortOrder,
         sortBy: SortBy,
         favoriteSongs: Set<String>,
-        excludedFolders: List<String>
+        excludedFolders: List<String>,
     ) = contentResolver.observe(uri = MediaStoreConfig.Song.Collection).map {
         buildList {
             contentResolver.query(
@@ -41,7 +57,7 @@ class MediaStoreDataSource @Inject constructor(private val contentResolver: Cont
                     }
                 },
                 excludedFolders.map { "%$it%" }.toTypedArray(),
-                buildMediaStoreSortOrder(sortOrder, sortBy)
+                buildMediaStoreSortOrder(sortOrder, sortBy),
             )?.use { cursor ->
                 // 쿼리 결과 순회하며 Song객체 ㅅ ㅐㅇ성
                 while (cursor.moveToNext()) {
@@ -57,7 +73,7 @@ class MediaStoreDataSource @Inject constructor(private val contentResolver: Cont
                     val mediaId = id.toString()
                     val mediaUri = ContentUris.withAppendedId(
                         MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                        id
+                        id,
                     )
 
                     val folder = cursor.getString(MediaStore.Audio.Media.DATA).asFolder()
@@ -75,7 +91,7 @@ class MediaStoreDataSource @Inject constructor(private val contentResolver: Cont
                         folder = folder,
                         duration = duration,
                         date = date.asLocalDateTime(),
-                        isFavorite = mediaId in favoriteSongs
+                        isFavorite = mediaId in favoriteSongs,
                     ).let(::add)
                 }
             }

@@ -36,13 +36,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import com.najudoryeong.musicdo.DoUiState.Loading
 import com.najudoryeong.musicdo.core.designsystem.theme.DoTheme
 import com.najudoryeong.musicdo.core.model.DarkThemeConfig
 import com.najudoryeong.musicdo.ui.DoApp
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

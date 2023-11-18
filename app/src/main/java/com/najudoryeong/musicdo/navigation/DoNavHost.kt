@@ -1,9 +1,33 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.najudoryeong.musicdo.featrue.home.navigation.HomeGraphRoute
+import com.najudoryeong.musicdo.featrue.home.navigation.homeScreen
+import com.najudoryeong.musicdo.feature.favorite.navigation.favoriteScreen
+import com.najudoryeong.musicdo.feature.library.navigation.libraryScreen
+import com.najudoryeong.musicdo.feature.playlist.navigation.playlistScreen
+import com.najudoryeong.musicdo.feature.search.navigation.SearchGraphRoute
+import com.najudoryeong.musicdo.feature.search.navigation.searchScreen
+import com.najudoryeong.musicdo.feature.settings.navigation.settingsScreen
 
 @Composable
 fun DoNavHost(
@@ -13,18 +37,18 @@ fun DoNavHost(
     onNavigateToArtist: (prefix: String, artistId: Long) -> Unit,
     onNavigateToAlbum: (prefix: String, albumId: Long) -> Unit,
     onNavigateToFolder: (prefix: String, name: String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = startDestination
+        startDestination = startDestination,
     ) {
         homeScreen(
             onNavigateToPlayer = onNavigateToPlayer,
             onNavigateToArtist = { artistId -> onNavigateToArtist(HomeGraphRoute, artistId) },
             onNavigateToAlbum = { albumId -> onNavigateToAlbum(HomeGraphRoute, albumId) },
-            onNavigateToFolder = { name -> onNavigateToFolder(HomeGraphRoute, name) }
+            onNavigateToFolder = { name -> onNavigateToFolder(HomeGraphRoute, name) },
         ) {
             libraryScreen(prefix = HomeGraphRoute, onNavigateToPlayer = onNavigateToPlayer)
         }
@@ -32,7 +56,7 @@ fun DoNavHost(
             onNavigateToPlayer = onNavigateToPlayer,
             onNavigateToArtist = { artistId -> onNavigateToArtist(SearchGraphRoute, artistId) },
             onNavigateToAlbum = { albumId -> onNavigateToAlbum(SearchGraphRoute, albumId) },
-            onNavigateToFolder = { name -> onNavigateToFolder(SearchGraphRoute, name) }
+            onNavigateToFolder = { name -> onNavigateToFolder(SearchGraphRoute, name) },
         ) {
             libraryScreen(prefix = SearchGraphRoute, onNavigateToPlayer = onNavigateToPlayer)
         }

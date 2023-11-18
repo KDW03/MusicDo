@@ -1,9 +1,27 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.ui
 
 import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.tween
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.SwipeableState
+import androidx.compose.material.rememberSwipeableState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -15,8 +33,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
-import androidx.compose.material.SwipeableState
-import androidx.compose.material.rememberSwipeableState
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -38,11 +54,11 @@ fun rememberDoAppState(
     startDestination: TopLevelDestination = TopLevelDestination.Home,
     swipeableState: SwipeableState<Int> = rememberSwipeableState(
         initialValue = 0,
-        animationSpec = tween()
+        animationSpec = tween(),
     ),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     density: Density = LocalDensity.current,
-    configuration: Configuration = LocalConfiguration.current
+    configuration: Configuration = LocalConfiguration.current,
 ): DoAppState {
     val screenHeight = with(density) { configuration.screenHeightDp.dp.toPx() }
     val swipeAreaHeight = screenHeight - SwipeAreaOffset
@@ -52,14 +68,14 @@ fun rememberDoAppState(
         startDestination,
         swipeableState,
         swipeAreaHeight,
-        coroutineScope
+        coroutineScope,
     ) {
         DoAppState(
             navController = navController,
             startDestination = startDestination,
             swipeableState = swipeableState,
             swipeAreaHeight = swipeAreaHeight,
-            coroutineScope = coroutineScope
+            coroutineScope = coroutineScope,
         )
     }
 }
@@ -71,7 +87,7 @@ class DoAppState(
     val startDestination: TopLevelDestination,
     val swipeableState: SwipeableState<Int>,
     val swipeAreaHeight: Float,
-    val coroutineScope: CoroutineScope
+    val coroutineScope: CoroutineScope,
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
@@ -121,19 +137,19 @@ class DoAppState(
     fun navigateToArtist(prefix: String, artistId: Long) = navController.navigateToLibrary(
         prefix = prefix,
         libraryType = LibraryType.Artist,
-        libraryId = artistId.toString()
+        libraryId = artistId.toString(),
     )
 
     fun navigateToAlbum(prefix: String, albumId: Long) = navController.navigateToLibrary(
         prefix = prefix,
         libraryType = LibraryType.Album,
-        libraryId = albumId.toString()
+        libraryId = albumId.toString(),
     )
 
     fun navigateToFolder(prefix: String, name: String) = navController.navigateToLibrary(
         prefix = prefix,
         libraryType = LibraryType.Folder,
-        libraryId = name
+        libraryId = name,
     )
 
     @Suppress("TopLevelComposableFunctions")

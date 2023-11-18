@@ -25,6 +25,7 @@ import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.List
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -39,6 +40,7 @@ object DoIcons {
     val FavoriteBorder = ImageVectorIcon(Icons.Rounded.FavoriteBorder)
     val FavoriteDrawable = DrawableResourceIcon(R.drawable.ic_favorite)
     val FavoriteBorderDrawable = DrawableResourceIcon(R.drawable.ic_favorite_border)
+    val Playlist = ImageVectorIcon(Icons.Rounded.List)
     val Settings = ImageVectorIcon(Icons.Rounded.Settings)
     val ArrowBack = ImageVectorIcon(Icons.Rounded.ArrowBack)
     val Clear = ImageVectorIcon(Icons.Rounded.Clear)

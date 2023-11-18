@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.core.designsystem.componenet
 
 import androidx.compose.animation.core.animateDpAsState
@@ -37,22 +53,22 @@ fun DoCard(
     elevation: CardElevation = CardDefaults.cardElevation(),
     border: BorderStroke? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
         targetValue = if (isPressed) CardPressedScale else 1f,
         animationSpec = CardPressedAnimation,
-        label = "ScaleAnimation"
+        label = "ScaleAnimation",
     )
     val alpha by animateFloatAsState(
         targetValue = if (isPressed) CardPressedAlpha else 1f,
         animationSpec = CardPressedAnimation,
-        label = "AlphaAnimation"
+        label = "AlphaAnimation",
     )
     val animatedShapeSize by animateDpAsState(
         targetValue = if (isPressed) clickedShapeSize else shapeSize,
-        label = "ShapeSizeAnimation"
+        label = "ShapeSizeAnimation",
     )
 
     Card(
@@ -64,7 +80,7 @@ fun DoCard(
         elevation = elevation,
         border = border,
         interactionSource = interactionSource,
-        content = content
+        content = content,
     )
 }
 

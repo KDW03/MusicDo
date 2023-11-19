@@ -36,18 +36,25 @@ interface SettingsRepository {
 
     /** 재생 큐 ID set 함수 */
     suspend fun setPlayingQueueIds(playingQueueIds: List<String>)
+
     /** 재생 큐 Index set 함수 */
     suspend fun setPlayingQueueIndex(playingQueueIndex: Int)
+
     /** 재생 모드 set 함수 */
     suspend fun setPlaybackMode(playbackMode: PlaybackMode)
+
     /** 정렬 순서 set 함수 */
     suspend fun setSortOrder(sortOrder: SortOrder)
+
     /** 정렬 기준 set 함수 */
     suspend fun setSortBy(sortBy: SortBy)
+
     /** 특정 곡 즐겨 찾기 toggle 함수 */
     suspend fun toggleFavoriteSong(id: String, isFavorite: Boolean)
+
     /** 동적 색상 여부 set 함수 */
     suspend fun setDynamicColor(useDynamicColor: Boolean)
+
     /** 다크 테마 여부 set 함수 */
     suspend fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig)
 }

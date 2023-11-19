@@ -31,11 +31,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:common"))
     implementation(project(":core:database"))
     implementation(project(":core:datastore"))
     implementation(project(":core:model"))
-    implementation(project(":core:media-notification"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:mediastore"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.datetime)

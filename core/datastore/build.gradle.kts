@@ -20,6 +20,8 @@ plugins {
     alias(libs.plugins.protobuf)
 }
 
+
+
 android {
     defaultConfig {
         consumerProguardFiles("consumer-proguard-rules.pro")

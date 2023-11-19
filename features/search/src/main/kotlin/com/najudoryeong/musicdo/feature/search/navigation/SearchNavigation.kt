@@ -19,6 +19,7 @@ package com.najudoryeong.musicdo.feature.search.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.najudoryeong.musicdo.feature.search.SearchRoute
 
 const val SearchGraphRoute = "search_graph"
 const val SearchRoute = "search_route"

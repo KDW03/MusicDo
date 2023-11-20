@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">MusicDo</string>
+    <string name="storage_access">Storage Access</string>
+    <string name="storage_access_permission_text">The app needs permission to access your device storage for playing music.</string>
+    <string name="grant_access">Grant access</string>
+    <string name="settings">Settings</string>
+</resources>

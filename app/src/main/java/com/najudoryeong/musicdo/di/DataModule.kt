@@ -16,11 +16,23 @@
 
 package com.najudoryeong.musicdo.di
 
+import com.google.android.datatransport.BuildConfig
+import com.najudoryeong.musicdo.core.data.util.DoVersionProvider
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-// Todo
+/**
+ * DoVersionProvider의 구현을 익명 객체를 사용하여 제공하는 모듈
+ */
 @Module
 @InstallIn(SingletonComponent::class)
-object DataModule
+object DataModule {
+
+    @Provides
+    fun provideDoVersionProvider() = object : DoVersionProvider {
+        override val version: String = BuildConfig.VERSION_NAME
+    }
+
+}

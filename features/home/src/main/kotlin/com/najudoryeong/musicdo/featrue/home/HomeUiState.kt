@@ -16,4 +16,25 @@
 
 package com.najudoryeong.musicdo.featrue.home
 
-class HomeUiState
+import com.najudoryeong.musicdo.core.model.Album
+import com.najudoryeong.musicdo.core.model.Artist
+import com.najudoryeong.musicdo.core.model.Folder
+import com.najudoryeong.musicdo.core.model.Song
+import com.najudoryeong.musicdo.core.model.SortBy
+import com.najudoryeong.musicdo.core.model.SortOrder
+
+/**
+ * Home화면 UI 상태 Interface
+ */
+sealed interface HomeUiState {
+    data object Loading : HomeUiState
+
+    data class Success(
+        val songs: List<Song>,
+        val artists: List<Artist>,
+        val albums: List<Album>,
+        val folders: List<Folder>,
+        val sortOrder: SortOrder,
+        val sortBy: SortBy
+    ) : HomeUiState
+}

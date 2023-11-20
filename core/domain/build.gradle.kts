@@ -22,8 +22,11 @@ plugins {
 android.namespace = "com.najudoryeong.musicdo.core.domain"
 
 dependencies {
+    api(project(":core:common"))
     implementation(project(":core:model"))
+
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
     testImplementation(project(":core:testing"))
 }

@@ -17,7 +17,7 @@ plugins {
     id("musicdo.android.feature")
 }
 
-android.namespace = "com.najudoryeong.musicdo.feature.library"
+android.namespace = "com.najudoryeong.musicdo.feature.playlist"
 
 dependencies {
     implementation(project(":core:media-service"))

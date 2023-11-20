@@ -20,5 +20,5 @@ plugins {
 }
 
 android {
-    namespace = "com.najudoryeong.musicdo.feature.home"
+    namespace = "com.najudoryeong.musicdo.feature.favorite"
 }

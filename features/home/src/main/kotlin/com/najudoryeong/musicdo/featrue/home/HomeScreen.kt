@@ -17,8 +17,15 @@
 package com.najudoryeong.musicdo.featrue.home
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.najudoryeong.musicdo.core.model.MusicState
+import com.najudoryeong.musicdo.core.model.SortBy
+import com.najudoryeong.musicdo.core.model.SortOrder
+import com.najudoryeong.musicdo.core.ui.component.MediaPager
+
 
 @Composable
 internal fun HomeRoute(
@@ -27,8 +34,74 @@ internal fun HomeRoute(
     onNavigateToAlbum: (Long) -> Unit,
     onNavigateToFolder: (String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
+    // UI 상태
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val musicState by viewModel.musicState.collectAsStateWithLifecycle()
+
+    when (val uiState = state) {
+        HomeUiState.Loading -> Unit
+        is HomeUiState.Success -> {
+            HomeScreen(
+                modifier = modifier,
+                uiState = uiState,
+                musicState = musicState,
+                onChangeSortOrder = viewModel::onChangeSortOrder,
+                onChangeSortBy = viewModel::onChangeSortBy,
+                onSongClick = { startIndex ->
+                    viewModel.play(startIndex)
+                    onNavigateToPlayer()
+                },
+                onPlayClick = {
+                    viewModel.play()
+                    onNavigateToPlayer()
+                },
+                onShuffleClick = {
+                    viewModel.shuffle()
+                    onNavigateToPlayer()
+                },
+                onArtistClick = onNavigateToArtist,
+                onAlbumClick = onNavigateToAlbum,
+                onFolderClick = onNavigateToFolder,
+                onToggleFavorite = viewModel::onToggleFavorite
+            )
+        }
+    }
+}
+
+@Composable
+private fun HomeScreen(
+    uiState: HomeUiState.Success,
+    musicState: MusicState,
+    onChangeSortOrder: (SortOrder) -> Unit,
+    onChangeSortBy: (SortBy) -> Unit,
+    onSongClick: (Int) -> Unit,
+    onArtistClick: (Long) -> Unit,
+    onAlbumClick: (Long) -> Unit,
+    onFolderClick: (String) -> Unit,
+    onPlayClick: () -> Unit,
+    onShuffleClick: () -> Unit,
+    onToggleFavorite: (id: String, isFavorite: Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    MediaPager(
+        modifier = modifier,
+        songs = uiState.songs,
+        currentPlayingSongId = musicState.currentMediaId,
+        artists = uiState.artists,
+        albums = uiState.albums,
+        folders = uiState.folders,
+        sortOrder = uiState.sortOrder,
+        sortBy = uiState.sortBy,
+        onChangeSortOrder = onChangeSortOrder,
+        onChangeSortBy = onChangeSortBy,
+        onSongClick = onSongClick,
+        onArtistClick = onArtistClick,
+        onAlbumClick = onAlbumClick,
+        onFolderClick = onFolderClick,
+        onPlayClick = onPlayClick,
+        onShuffleClick = onShuffleClick,
+        onToggleFavorite = onToggleFavorite
+    )
 }

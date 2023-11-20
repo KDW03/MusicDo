@@ -36,7 +36,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val musicServiceConnection: MusicServiceConnection,
@@ -47,10 +46,8 @@ class HomeViewModel @Inject constructor(
     getUserDataUseCase: GetUserDataUseCase,
     private val setSortOrderUseCase: SetSortOrderUseCase,
     private val setSortByUseCase: SetSortByUseCase,
-    private val toggleFavoriteSongUseCase: ToggleFavoriteSongUseCase
+    private val toggleFavoriteSongUseCase: ToggleFavoriteSongUseCase,
 ) : ViewModel() {
-
-
 
     /**
      * [GetSongsUseCase]를 통해 <Flow<List<Song>> 조회 후 StateFlow로 변환
@@ -58,7 +55,7 @@ class HomeViewModel @Inject constructor(
     private val songs = getSongsUseCase().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
-        initialValue = emptyList()
+        initialValue = emptyList(),
     )
 
     /**
@@ -69,7 +66,7 @@ class HomeViewModel @Inject constructor(
         getArtistsUseCase(),
         getAlbumsUseCase(),
         getFoldersUseCase(),
-        getUserDataUseCase()
+        getUserDataUseCase(),
     ) { songs, artists, albums, folders, userData ->
         HomeUiState.Success(
             songs = songs,
@@ -77,12 +74,12 @@ class HomeViewModel @Inject constructor(
             albums = albums,
             folders = folders,
             sortOrder = userData.sortOrder,
-            sortBy = userData.sortBy
+            sortBy = userData.sortBy,
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
-        initialValue = HomeUiState.Loading
+        initialValue = HomeUiState.Loading,
     )
 
     val musicState = musicServiceConnection.musicState

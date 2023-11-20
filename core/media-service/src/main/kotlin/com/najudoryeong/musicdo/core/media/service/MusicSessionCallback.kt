@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.core.media.service
 
 import android.os.Bundle
@@ -10,7 +26,7 @@ import androidx.media3.session.SessionResult
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import com.najudoryeong.musicdo.core.common.dispatcher.Dispatcher
-import com.najudoryeong.musicdo.core.common.dispatcher.DoDispatchers.*
+import com.najudoryeong.musicdo.core.common.dispatcher.DoDispatchers.MAIN
 import com.najudoryeong.musicdo.core.media.notification.common.MusicCommands.FAVORITE_OFF
 import com.najudoryeong.musicdo.core.media.notification.common.MusicCommands.FAVORITE_ON
 import com.najudoryeong.musicdo.core.media.notification.common.MusicCommands.PLAYBACK_MODE_REPEAT
@@ -28,7 +44,7 @@ import javax.inject.Inject
  */
 class MusicSessionCallback @Inject constructor(
     @Dispatcher(MAIN) mainDispatcher: CoroutineDispatcher,
-    private val musicActionHandler: MusicActionHandler
+    private val musicActionHandler: MusicActionHandler,
 ) : MediaLibraryService.MediaLibrarySession.Callback {
     private val coroutineScope = CoroutineScope(mainDispatcher + SupervisorJob())
 
@@ -44,7 +60,7 @@ class MusicSessionCallback @Inject constructor(
         val actionsMap = mapOf(
             PlaybackMode.REPEAT to PLAYBACK_MODE_REPEAT,
             PlaybackMode.REPEAT_ONE to PLAYBACK_MODE_REPEAT_ONE,
-            PlaybackMode.SHUFFLE to PLAYBACK_MODE_SHUFFLE
+            PlaybackMode.SHUFFLE to PLAYBACK_MODE_SHUFFLE,
         )
         musicActionHandler.setRepeatShuffleCommand(actionsMap.getValue(playbackMode))
     }
@@ -56,7 +72,6 @@ class MusicSessionCallback @Inject constructor(
      * @param isFavorite 현재 미디어 아이템이 즐겨찾기 상태인지 여부
      */
     fun toggleFavoriteAction(isFavorite: Boolean) = musicActionHandler.setFavoriteCommand(if (isFavorite) FAVORITE_ON else FAVORITE_OFF)
-
 
     /**
      * 미디어 세션에 미디어 아이템을 추가하는 콜백 함수
@@ -70,15 +85,14 @@ class MusicSessionCallback @Inject constructor(
     override fun onAddMediaItems(
         mediaSession: MediaSession,
         controller: MediaSession.ControllerInfo,
-        mediaItems: List<MediaItem>
+        mediaItems: List<MediaItem>,
     ): ListenableFuture<List<MediaItem>> = Futures.immediateFuture(
         mediaItems.map { mediaItem ->
             mediaItem.buildUpon()
                 .setUri(mediaItem.requestMetadata.mediaUri)
                 .build()
-        }
+        },
     )
-
 
     /**
      * 미디어 컨트롤러가 미디어 세션에 연결될 때 호출되는 함수
@@ -89,7 +103,7 @@ class MusicSessionCallback @Inject constructor(
      */
     override fun onConnect(
         session: MediaSession,
-        controller: MediaSession.ControllerInfo
+        controller: MediaSession.ControllerInfo,
     ): MediaSession.ConnectionResult {
         val connectionResult = super.onConnect(session, controller)
         val availableSessionCommands = connectionResult.availableSessionCommands.buildUpon()
@@ -102,7 +116,7 @@ class MusicSessionCallback @Inject constructor(
         // 연결을 수락하고 사용 가능한 커맨드를 반환
         return MediaSession.ConnectionResult.accept(
             availableSessionCommands.build(),
-            connectionResult.availablePlayerCommands
+            connectionResult.availablePlayerCommands,
         )
     }
 
@@ -116,7 +130,6 @@ class MusicSessionCallback @Inject constructor(
     override fun onPostConnect(session: MediaSession, controller: MediaSession.ControllerInfo) {
         session.setCustomLayout(controller, musicActionHandler.customLayout)
     }
-
 
     /**
      * 사용자 정의 커맨드를 처리하는 함수
@@ -132,7 +145,7 @@ class MusicSessionCallback @Inject constructor(
         session: MediaSession,
         controller: MediaSession.ControllerInfo,
         customCommand: SessionCommand,
-        args: Bundle
+        args: Bundle,
     ): ListenableFuture<SessionResult> {
         // 사용자 정의 커맨드를 처리
         musicActionHandler.onCustomCommand(mediaSession = session, customCommand = customCommand)

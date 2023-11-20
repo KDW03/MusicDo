@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.core.media.service
 
 import android.content.Context
@@ -7,8 +23,7 @@ import androidx.media3.session.CommandButton
 import androidx.media3.session.MediaSession
 import androidx.media3.session.SessionCommand
 import com.najudoryeong.musicdo.core.common.dispatcher.Dispatcher
-import com.najudoryeong.musicdo.core.media.common.R as mediaCommonR
-import com.najudoryeong.musicdo.core.common.dispatcher.DoDispatchers.*
+import com.najudoryeong.musicdo.core.common.dispatcher.DoDispatchers.MAIN
 import com.najudoryeong.musicdo.core.designsystem.icon.DoIcons
 import com.najudoryeong.musicdo.core.domain.usecase.SetPlaybackModeUseCase
 import com.najudoryeong.musicdo.core.domain.usecase.ToggleFavoriteSongUseCase
@@ -27,6 +42,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.najudoryeong.musicdo.core.media.common.R as mediaCommonR
 
 /**
  * 미디어 세션과 관련된 사용자 정의 커맨드(명령)를 처리하는 역할을 하는 클래스
@@ -35,7 +51,7 @@ class MusicActionHandler @Inject constructor(
     @Dispatcher(MAIN) mainDispatcher: CoroutineDispatcher,
     @ApplicationContext private val context: Context,
     private val setPlaybackModeUseCase: SetPlaybackModeUseCase,
-    private val toggleFavoriteSongUseCase: ToggleFavoriteSongUseCase
+    private val toggleFavoriteSongUseCase: ToggleFavoriteSongUseCase,
 ) {
     private val coroutineScope = CoroutineScope(mainDispatcher + SupervisorJob())
 
@@ -46,7 +62,6 @@ class MusicActionHandler @Inject constructor(
         this[PLAYBACK_MODE] = customCommands.getValue(PLAYBACK_MODE_REPEAT)
         this[FAVORITE] = customCommands.getValue(FAVORITE_OFF)
     }
-
 
     val customLayout: List<CommandButton> get() = customLayoutMap.values.toList()
 
@@ -69,7 +84,6 @@ class MusicActionHandler @Inject constructor(
             }
         }
     }
-
 
     fun setRepeatShuffleCommand(action: String) =
         customLayoutMap.set(PLAYBACK_MODE, customCommands.getValue(action))
@@ -105,7 +119,6 @@ class MusicActionHandler @Inject constructor(
         }
     }
 
-
     /**
      * @return Map<String, CommandButton> - command to 사용자 정의 커맨드 버튼 맵
      */
@@ -114,28 +127,28 @@ class MusicActionHandler @Inject constructor(
         PLAYBACK_MODE_REPEAT to buildCustomCommand(
             action = PLAYBACK_MODE_REPEAT,
             displayName = context.getString(mediaCommonR.string.repeat),
-            iconResource = DoIcons.Repeat.resourceId
+            iconResource = DoIcons.Repeat.resourceId,
         ),
         PLAYBACK_MODE_REPEAT_ONE to buildCustomCommand(
             action = PLAYBACK_MODE_REPEAT_ONE,
             displayName = context.getString(mediaCommonR.string.repeat_one),
-            iconResource = DoIcons.RepeatOne.resourceId
+            iconResource = DoIcons.RepeatOne.resourceId,
         ),
         PLAYBACK_MODE_SHUFFLE to buildCustomCommand(
             action = PLAYBACK_MODE_SHUFFLE,
             displayName = context.getString(mediaCommonR.string.shuffle),
-            iconResource = DoIcons.Shuffle.resourceId
+            iconResource = DoIcons.Shuffle.resourceId,
         ),
         FAVORITE_ON to buildCustomCommand(
             action = FAVORITE_ON,
             displayName = context.getString(mediaCommonR.string.favorite_remove),
-            iconResource = DoIcons.FavoriteDrawable.resourceId
+            iconResource = DoIcons.FavoriteDrawable.resourceId,
         ),
         FAVORITE_OFF to buildCustomCommand(
             action = FAVORITE_OFF,
             displayName = context.getString(mediaCommonR.string.favorite_add),
-            iconResource = DoIcons.FavoriteBorderDrawable.resourceId
-        )
+            iconResource = DoIcons.FavoriteBorderDrawable.resourceId,
+        ),
     )
 }
 

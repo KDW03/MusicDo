@@ -1,9 +1,24 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.core.media.service
 
 import android.app.PendingIntent
 import android.app.TaskStackBuilder
 import android.content.Intent
-import android.os.Build
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
@@ -13,7 +28,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import com.najudoryeong.musicdo.core.common.dispatcher.Dispatcher
-import com.najudoryeong.musicdo.core.common.dispatcher.DoDispatchers.*
+import com.najudoryeong.musicdo.core.common.dispatcher.DoDispatchers.MAIN
 import com.najudoryeong.musicdo.core.domain.usecase.GetFavoriteSongIdsUseCase
 import com.najudoryeong.musicdo.core.domain.usecase.GetPlaybackModeUseCase
 import com.najudoryeong.musicdo.core.media.notification.MusicNotificationProvider
@@ -31,24 +46,25 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
- /**
+/**
  * 미디어 세션과 관련된 기능을 제공하는 서비스 [MediaSessionService] 상속
  */
- @UnstableApi
+@UnstableApi
 @AndroidEntryPoint
 class MusicService : MediaSessionService() {
     private var mediaSession: MediaSession? = null
 
     @Inject
     lateinit var musicSessionCallback: MusicSessionCallback
+
     @Inject
     lateinit var musicNotificationProvider: MusicNotificationProvider
+
     @Inject
     lateinit var getPlaybackModeUseCase: GetPlaybackModeUseCase
+
     @Inject
     lateinit var getFavoriteSongIdsUseCase: GetFavoriteSongIdsUseCase
-
 
     private val _currentMediaId = MutableStateFlow("")
     private val currentMediaId = _currentMediaId.asStateFlow()
@@ -67,13 +83,11 @@ class MusicService : MediaSessionService() {
             .setUsage(C.USAGE_MEDIA)
             .build()
 
-
         // ExoPlayer 초기화 audioAttributes 적용 및 Nosiy시 자동 일시정지
         val player = ExoPlayer.Builder(this)
             .setAudioAttributes(audioAttributes, true)
             .setHandleAudioBecomingNoisy(true)
             .build()
-
 
         // 세션 액티비티(미디어 세션과 상호작용할 때 보여주는 인터페이스를 제공)를 위한 PendingIntent 생성
         val sessionActivityPendingIntent = TaskStackBuilder.create(this).run {
@@ -96,7 +110,6 @@ class MusicService : MediaSessionService() {
         startFavoriteSync()
     }
 
-
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo) = mediaSession
 
     override fun onDestroy() {
@@ -111,11 +124,10 @@ class MusicService : MediaSessionService() {
         super.onDestroy()
     }
 
-
-     /**
-      * 미디어 재생 모드를 동기화하는 메서드.
-      * 사용자가 설정한 재생 모드(반복, 셔플 등)에 따라 미디어 플레이어를 조정합니다.
-      */
+    /**
+     * 미디어 재생 모드를 동기화하는 메서드.
+     * 사용자가 설정한 재생 모드(반복, 셔플 등)에 따라 미디어 플레이어를 조정합니다.
+     */
     private fun startPlaybackModeSync() = coroutineScope.launch {
         getPlaybackModeUseCase().collectLatest { playbackMode ->
             mediaSession?.player?.run {

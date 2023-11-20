@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.core.media.notification
 
 import android.app.NotificationChannel
@@ -16,8 +32,8 @@ import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaStyleNotificationHelper
 import com.google.common.collect.ImmutableList
 import com.najudoryeong.musicdo.core.common.dispatcher.Dispatcher
-import com.najudoryeong.musicdo.core.common.dispatcher.DoDispatchers
-import com.najudoryeong.musicdo.core.common.dispatcher.DoDispatchers.*
+import com.najudoryeong.musicdo.core.common.dispatcher.DoDispatchers.IO
+import com.najudoryeong.musicdo.core.common.dispatcher.DoDispatchers.MAIN
 import com.najudoryeong.musicdo.core.designsystem.icon.DoIcons
 import com.najudoryeong.musicdo.core.media.notification.common.MusicActions
 import com.najudoryeong.musicdo.core.media.notification.util.asArtworkBitmap
@@ -37,11 +53,10 @@ import javax.inject.Inject
 class MusicNotificationProvider @Inject constructor(
     @Dispatcher(MAIN) mainDispatcher: CoroutineDispatcher,
     @ApplicationContext private val context: Context,
-    @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher
+    @Dispatcher(IO) private val ioDispatcher: CoroutineDispatcher,
 ) : MediaNotification.Provider {
     private val notificationManager = checkNotNull(context.getSystemService<NotificationManager>())
     private val coroutineScope = CoroutineScope(mainDispatcher + SupervisorJob())
-
 
     /**
      * 미디어 세션에서 노티피케이션을 생성하는 함수
@@ -50,7 +65,7 @@ class MusicNotificationProvider @Inject constructor(
         mediaSession: MediaSession,
         customLayout: ImmutableList<CommandButton>,
         actionFactory: MediaNotification.ActionFactory,
-        onNotificationChangedCallback: MediaNotification.Provider.Callback
+        onNotificationChangedCallback: MediaNotification.Provider.Callback,
     ): MediaNotification {
         ensureNotificationChannel()
 
@@ -68,7 +83,7 @@ class MusicNotificationProvider @Inject constructor(
             mediaSession = mediaSession,
             customLayout = customLayout,
             actionFactory = actionFactory,
-            playWhenReady = player.playWhenReady
+            playWhenReady = player.playWhenReady,
         ).forEach(builder::addAction)
 
         setupArtwork(
@@ -77,7 +92,7 @@ class MusicNotificationProvider @Inject constructor(
             updateNotification = {
                 val notification = MediaNotification(MusicNotificationId, builder.build())
                 onNotificationChangedCallback.onNotificationChanged(notification)
-            }
+            },
         )
 
         return MediaNotification(MusicNotificationId, builder.build())
@@ -100,7 +115,7 @@ class MusicNotificationProvider @Inject constructor(
         val notificationChannel = NotificationChannel(
             MusicNotificationChannelId,
             context.getString(R.string.music_notification_channel_name),
-            NotificationManager.IMPORTANCE_LOW
+            NotificationManager.IMPORTANCE_LOW,
         )
         notificationManager.createNotificationChannel(notificationChannel)
     }
@@ -112,13 +127,13 @@ class MusicNotificationProvider @Inject constructor(
         mediaSession: MediaSession,
         customLayout: ImmutableList<CommandButton>,
         actionFactory: MediaNotification.ActionFactory,
-        playWhenReady: Boolean
+        playWhenReady: Boolean,
     ) = listOf(
         MusicActions.getRepeatShuffleAction(mediaSession, customLayout, actionFactory),
         MusicActions.getSkipPreviousAction(context, mediaSession, actionFactory),
         MusicActions.getPlayPauseAction(context, mediaSession, actionFactory, playWhenReady),
         MusicActions.getSkipNextAction(context, mediaSession, actionFactory),
-        MusicActions.getFavoriteAction(mediaSession, customLayout, actionFactory)
+        MusicActions.getFavoriteAction(mediaSession, customLayout, actionFactory),
     )
 
     /**
@@ -127,7 +142,7 @@ class MusicNotificationProvider @Inject constructor(
     private fun setupArtwork(
         uri: Uri?,
         setLargeIcon: (Bitmap?) -> Unit,
-        updateNotification: () -> Unit
+        updateNotification: () -> Unit,
     ) = coroutineScope.launch {
         val bitmap = loadArtworkBitmap(uri)
         setLargeIcon(bitmap)

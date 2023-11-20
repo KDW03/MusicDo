@@ -35,6 +35,6 @@ sealed interface HomeUiState {
         val albums: List<Album>,
         val folders: List<Folder>,
         val sortOrder: SortOrder,
-        val sortBy: SortBy
+        val sortBy: SortBy,
     ) : HomeUiState
 }

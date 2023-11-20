@@ -34,5 +34,4 @@ object DataModule {
     fun provideDoVersionProvider() = object : DoVersionProvider {
         override val version: String = BuildConfig.VERSION_NAME
     }
-
 }

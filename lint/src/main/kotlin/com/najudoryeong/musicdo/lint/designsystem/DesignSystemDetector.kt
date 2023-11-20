@@ -80,7 +80,6 @@ class DesignSystemDetector : Detector(), Detector.UastScanner {
             "NavigationBarItem" to "DoNavigationBarItem",
             "TabRow" to "DoTabRow",
             "Tab" to "DoTab",
-            "CenterAlignedTopAppBar" to "DoTopAppBar",
             "SmallTopAppBar" to "DoTopAppBar",
             "MediumTopAppBar" to "DoTopAppBar",
             "LargeTopAppBar" to "DoTopAppBar",

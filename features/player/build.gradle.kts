@@ -23,5 +23,4 @@ dependencies {
     implementation(project(":core:media-service"))
 
     implementation(libs.coil.kt)
-    implementation(libs.renderscript.intrinsics.replacement.toolkit)
 }

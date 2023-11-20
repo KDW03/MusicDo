@@ -26,7 +26,6 @@ import com.najudoryeong.musicdo.core.model.SortBy
 import com.najudoryeong.musicdo.core.model.SortOrder
 import com.najudoryeong.musicdo.core.ui.component.MediaPager
 
-
 @Composable
 internal fun HomeRoute(
     onNavigateToPlayer: () -> Unit,
@@ -34,7 +33,7 @@ internal fun HomeRoute(
     onNavigateToAlbum: (Long) -> Unit,
     onNavigateToFolder: (String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     // UI 상태
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -64,7 +63,7 @@ internal fun HomeRoute(
                 onArtistClick = onNavigateToArtist,
                 onAlbumClick = onNavigateToAlbum,
                 onFolderClick = onNavigateToFolder,
-                onToggleFavorite = viewModel::onToggleFavorite
+                onToggleFavorite = viewModel::onToggleFavorite,
             )
         }
     }
@@ -83,7 +82,7 @@ private fun HomeScreen(
     onPlayClick: () -> Unit,
     onShuffleClick: () -> Unit,
     onToggleFavorite: (id: String, isFavorite: Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     MediaPager(
         modifier = modifier,
@@ -102,6 +101,6 @@ private fun HomeScreen(
         onFolderClick = onFolderClick,
         onPlayClick = onPlayClick,
         onShuffleClick = onShuffleClick,
-        onToggleFavorite = onToggleFavorite
+        onToggleFavorite = onToggleFavorite,
     )
 }

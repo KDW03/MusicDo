@@ -26,6 +26,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 
+/**
+ * 단일 줄 텍스트를 표시하는 @Composable
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SingleLineText(
@@ -36,10 +39,13 @@ fun SingleLineText(
     style: TextStyle = LocalTextStyle.current,
 ) {
     Text(
+        // shouldUseMarquee가 true이면 if Text가 넘칠 때 스크롤 효과(Marquee) 적용
         modifier = modifier.then(if (shouldUseMarquee) Modifier.basicMarquee() else Modifier),
         text = text,
         color = color,
+        // 넘칠 경우 ... 처리
         overflow = TextOverflow.Ellipsis,
+        // 한줄
         maxLines = 1,
         style = style,
     )

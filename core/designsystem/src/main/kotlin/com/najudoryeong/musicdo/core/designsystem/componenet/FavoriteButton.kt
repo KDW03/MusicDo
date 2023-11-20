@@ -37,6 +37,9 @@ import com.najudoryeong.musicdo.core.designsystem.R
 import com.najudoryeong.musicdo.core.designsystem.icon.DoIcons
 import com.najudoryeong.musicdo.core.designsystem.theme.DoTheme
 
+/**
+ * 즐겨찾기 토글 버튼을 구현하는 @Composable
+ */
 @Composable
 fun FavoriteButton(
     modifier: Modifier = Modifier,
@@ -49,6 +52,10 @@ fun FavoriteButton(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val isPressed by interactionSource.collectIsPressedAsState()
+
+    /**
+     * 버튼이 눌렸을 때 스케일 및 투명도 애니메이션
+     */
     val scale by animateFloatAsState(
         targetValue = if (isPressed) FavoriteButtonPressedScale else 1f,
         animationSpec = FavoriteButtonPressedAnimation,

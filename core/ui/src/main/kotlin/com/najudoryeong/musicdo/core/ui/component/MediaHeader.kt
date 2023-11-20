@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.core.ui.component
 
 import androidx.annotation.DrawableRes
@@ -67,40 +83,39 @@ fun MediaHeader(
     onChangeSortBy: (SortBy) -> Unit,
     onPlayClick: () -> Unit,
     onShuffleClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var shouldShowSortSection by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
         ) {
             PlayShuffleButton(
                 modifier = Modifier.weight(1f),
                 iconResource = DoIcons.Play.resourceId,
                 textResource = mediaCommonR.string.play,
-                onClick = onPlayClick
+                onClick = onPlayClick,
             )
 
             PlayShuffleButton(
                 modifier = Modifier.weight(1f),
                 iconResource = DoIcons.Shuffle.resourceId,
                 textResource = mediaCommonR.string.shuffle,
-                onClick = onShuffleClick
+                onClick = onShuffleClick,
             )
 
             SortButton(
                 isSortSectionShown = shouldShowSortSection,
                 onClick = { shouldShowSortSection = !shouldShowSortSection },
-                colors = IconButtonDefaults.iconButtonColors(contentColor = MediaHeaderContentColor)
+                colors = IconButtonDefaults.iconButtonColors(contentColor = MediaHeaderContentColor),
             )
         }
-
 
         // 정렬 순서 및 기준 표시 섹션 visible using shouldShowSortSection
         CompositionLocalProvider(LocalContentColor provides MediaHeaderContentColor) {
@@ -112,8 +127,8 @@ fun MediaHeader(
                     onChangeSortBy = onChangeSortBy,
                     radioButtonColors = RadioButtonDefaults.colors(
                         selectedColor = MediaHeaderContentColor,
-                        unselectedColor = MediaHeaderContentColor.copy(alpha = 0.75f)
-                    )
+                        unselectedColor = MediaHeaderContentColor.copy(alpha = 0.75f),
+                    ),
                 )
             }
         }
@@ -128,36 +143,36 @@ fun OutlinedMediaHeader(
     onChangeSortBy: (SortBy) -> Unit,
     onPlayClick: () -> Unit,
     onShuffleClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var shouldShowSortSection by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
         ) {
             PlayShuffleButton(
                 modifier = Modifier.weight(1f),
                 iconResource = DoIcons.Play.resourceId,
                 textResource = mediaCommonR.string.play,
-                onClick = onPlayClick
+                onClick = onPlayClick,
             )
 
             OutlinedPlayShuffleButton(
                 modifier = Modifier.weight(1f),
                 iconResource = DoIcons.Shuffle.resourceId,
                 textResource = mediaCommonR.string.shuffle,
-                onClick = onShuffleClick
+                onClick = onShuffleClick,
             )
 
             SortButton(
                 isSortSectionShown = shouldShowSortSection,
-                onClick = { shouldShowSortSection = !shouldShowSortSection }
+                onClick = { shouldShowSortSection = !shouldShowSortSection },
             )
         }
 
@@ -166,7 +181,7 @@ fun OutlinedMediaHeader(
                 sortOrder = sortOrder,
                 sortBy = sortBy,
                 onChangeSortOrder = onChangeSortOrder,
-                onChangeSortBy = onChangeSortBy
+                onChangeSortBy = onChangeSortBy,
             )
         }
     }
@@ -180,13 +195,13 @@ private fun PlayShuffleButton(
     @DrawableRes iconResource: Int,
     @StringRes textResource: Int,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     DoButton(modifier = modifier, onClick = onClick) {
         Icon(
             modifier = Modifier.size(IconSize),
             painter = painterResource(id = iconResource),
-            contentDescription = stringResource(id = textResource)
+            contentDescription = stringResource(id = textResource),
         )
         Spacer(modifier = Modifier.width(MaterialTheme.spacing.extraSmall))
         SingleLineText(text = stringResource(id = textResource), shouldUseMarquee = true)
@@ -201,13 +216,13 @@ private fun OutlinedPlayShuffleButton(
     @DrawableRes iconResource: Int,
     @StringRes textResource: Int,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     DoOutlinedButton(modifier = modifier, onClick = onClick) {
         Icon(
             modifier = Modifier.size(IconSize),
             painter = painterResource(id = iconResource),
-            contentDescription = stringResource(id = textResource)
+            contentDescription = stringResource(id = textResource),
         )
         Spacer(modifier = Modifier.width(MaterialTheme.spacing.extraSmall))
         SingleLineText(text = stringResource(id = textResource), shouldUseMarquee = true)
@@ -223,13 +238,12 @@ private fun SortButton(
     isSortSectionShown: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    colors: IconButtonColors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.primary)
+    colors: IconButtonColors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.primary),
 ) {
-
     // isSortSectionShown에 따른 회전 애니메이션
     val rotateValue by animateFloatAsState(
         targetValue = if (isSortSectionShown) SortRotateValue else 0f,
-        label = "RotateAnimation"
+        label = "RotateAnimation",
     )
 
     IconButton(modifier = modifier, onClick = onClick, colors = colors) {
@@ -237,17 +251,17 @@ private fun SortButton(
             modifier = Modifier.rotate(rotateValue), // 회전 애니메이션
             targetState = isSortSectionShown,
             transitionSpec = { scaleIn() with scaleOut() },
-            label = "SortIconAnimation"
+            label = "SortIconAnimation",
         ) { targetIsSortSectionShown ->
             if (targetIsSortSectionShown) {
                 Icon(
                     imageVector = DoIcons.Close.imageVector,
-                    contentDescription = stringResource(id = R.string.close)
+                    contentDescription = stringResource(id = R.string.close),
                 )
             } else {
                 Icon(
                     painter = painterResource(id = DoIcons.Sort.resourceId),
-                    contentDescription = stringResource(id = R.string.sort)
+                    contentDescription = stringResource(id = R.string.sort),
                 )
             }
         }
@@ -265,15 +279,13 @@ private fun SortSection(
     onChangeSortOrder: (SortOrder) -> Unit,
     onChangeSortBy: (SortBy) -> Unit,
     modifier: Modifier = Modifier,
-    radioButtonColors: RadioButtonColors = RadioButtonDefaults.colors()
+    radioButtonColors: RadioButtonColors = RadioButtonDefaults.colors(),
 ) {
-
-
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(horizontal = MaterialTheme.spacing.small),
             text = stringResource(id = R.string.sort_order),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
 
         // 오름차순 / 내림차순
@@ -283,14 +295,14 @@ private fun SortSection(
                 textRes = R.string.ascending,
                 isSelected = sortOrder == SortOrder.ASCENDING,
                 onClick = { onChangeSortOrder(SortOrder.ASCENDING) },
-                colors = radioButtonColors
+                colors = radioButtonColors,
             )
             RadioButtonText(
                 modifier = Modifier.weight(1f),
                 textRes = R.string.descending,
                 isSelected = sortOrder == SortOrder.DESCENDING,
                 onClick = { onChangeSortOrder(SortOrder.DESCENDING) },
-                colors = radioButtonColors
+                colors = radioButtonColors,
             )
         }
 
@@ -299,7 +311,7 @@ private fun SortSection(
         Text(
             modifier = Modifier.padding(horizontal = MaterialTheme.spacing.small),
             text = stringResource(id = R.string.sort_by),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
 
         /**
@@ -312,7 +324,7 @@ private fun SortSection(
                     textRes = sortByStringResourcesMap.getValue(sortByItem),
                     isSelected = sortBy == sortByItem,
                     onClick = { onChangeSortBy(sortByItem) },
-                    colors = radioButtonColors
+                    colors = radioButtonColors,
                 )
             }
         }
@@ -327,7 +339,7 @@ private val sortByStringResourcesMap = mapOf(
     SortBy.ARTIST to R.string.artist,
     SortBy.ALBUM to R.string.album,
     SortBy.DURATION to R.string.duration,
-    SortBy.DATE to R.string.date
+    SortBy.DATE to R.string.date,
 )
 
 private val IconSize = 20.dp

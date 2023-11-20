@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.core.ui.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -22,7 +38,7 @@ import com.najudoryeong.musicdo.core.ui.R
 internal fun Folders(
     folders: List<Folder>,
     onClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     if (folders.isNotEmpty()) {
         LazyColumn(modifier = modifier.fillMaxSize()) {
@@ -31,7 +47,7 @@ internal fun Folders(
                 FolderItem(
                     modifier = Modifier.animateItemPlacement(),
                     folder = folder,
-                    onClick = { onClick(folder.name) }
+                    onClick = { onClick(folder.name) },
                 )
             }
         }
@@ -44,30 +60,29 @@ internal fun Folders(
 private fun FolderItem(
     folder: Folder,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     DoCard(modifier = modifier, onClick = onClick) {
         Column(
             modifier = Modifier
                 .padding(MaterialTheme.spacing.small)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
-
             // Folder Name Text
             SingleLineText(
                 text = folder.name,
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
             // Folder Songs size
             SingleLineText(
                 text = pluralStringResource(
                     id = R.plurals.number_of_songs,
                     count = folder.songs.size,
-                    folder.songs.size
+                    folder.songs.size,
                 ),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }

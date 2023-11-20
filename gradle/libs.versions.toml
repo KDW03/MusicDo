@@ -142,7 +142,6 @@ androidx-media3-session = { module = "androidx.media3:media3-session", version.r
 androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "androidx-media3" }
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "androidx-constraintlayout" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
-renderscript-intrinsics-replacement-toolkit = { module = "com.github.maximillianleonov:renderscript-intrinsics-replacement-toolkit", version.ref = "renderscript-intrinsics-replacement-toolkit" }
 
 
 # Dependencies of the included build-logic

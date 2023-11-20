@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.core.ui.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -22,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import com.najudoryeong.musicdo.core.designsystem.componenet.DoCard
 import com.najudoryeong.musicdo.core.designsystem.componenet.FavoriteButton
 import com.najudoryeong.musicdo.core.designsystem.componenet.SingleLineText
-import com.najudoryeong.musicdo.core.designsystem.componenet.ThemePreviews
 import com.najudoryeong.musicdo.core.designsystem.theme.spacing
 import com.najudoryeong.musicdo.core.model.Song
 import com.najudoryeong.musicdo.core.ui.R
@@ -41,9 +56,8 @@ fun Songs(
     currentPlayingSongId: String,
     onClick: (Int) -> Unit,
     onToggleFavorite: (id: String, isFavorite: Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
     if (songs.isNotEmpty()) {
         LazyColumn(modifier = modifier.fillMaxSize()) {
             // items : songs , key : song.mediaId
@@ -53,7 +67,7 @@ fun Songs(
                     song = song,
                     isPlaying = song.mediaId == currentPlayingSongId,
                     onClick = { onClick(index) },
-                    onToggleFavorite = { isFavorite -> onToggleFavorite(song.mediaId, isFavorite) }
+                    onToggleFavorite = { isFavorite -> onToggleFavorite(song.mediaId, isFavorite) },
                 )
             }
         }
@@ -70,7 +84,7 @@ fun LazyListScope.songs(
     songs: List<Song>,
     currentPlayingSongId: String,
     onClick: (Int) -> Unit,
-    onToggleFavorite: (id: String, isFavorite: Boolean) -> Unit
+    onToggleFavorite: (id: String, isFavorite: Boolean) -> Unit,
 ) {
     if (songs.isNotEmpty()) {
         itemsIndexed(items = songs, key = { _, song -> song.mediaId }) { index, song ->
@@ -79,7 +93,7 @@ fun LazyListScope.songs(
                 song = song,
                 isPlaying = song.mediaId == currentPlayingSongId,
                 onClick = { onClick(index) },
-                onToggleFavorite = { isFavorite -> onToggleFavorite(song.mediaId, isFavorite) }
+                onToggleFavorite = { isFavorite -> onToggleFavorite(song.mediaId, isFavorite) },
             )
         }
     } else {
@@ -100,7 +114,7 @@ private fun SongItem(
     onToggleFavorite: (isFavorite: Boolean) -> Unit,
     modifier: Modifier = Modifier,
     colors: CardColors = CardDefaults.cardColors(
-        containerColor = if (isPlaying) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface
+        containerColor = if (isPlaying) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
     ),
 ) {
     DoCard(modifier = modifier, onClick = onClick, shapeSize = 0.dp, colors = colors) {
@@ -109,18 +123,18 @@ private fun SongItem(
                 .padding(MaterialTheme.spacing.small)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
                 modifier = Modifier.weight(SongDescriptionWeight),
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.smallMedium),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 // song Artwork Image
                 DoArtworkImage(
                     modifier = Modifier.size(SongCoverSize),
                     artworkUri = song.artworkUri,
-                    contentDescription = song.title
+                    contentDescription = song.title,
                 )
 
                 Column {
@@ -133,7 +147,7 @@ private fun SongItem(
                             MaterialTheme.colorScheme.onPrimary
                         } else {
                             MaterialTheme.colorScheme.onSurface
-                        }
+                        },
                     )
                     // song Artist Text
                     SingleLineText(
@@ -144,7 +158,7 @@ private fun SongItem(
                             MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.75f)
                         } else {
                             MaterialTheme.colorScheme.onSurfaceVariant
-                        }
+                        },
                     )
                 }
             }
@@ -163,13 +177,12 @@ private fun SongItem(
                 onToggleFavorite = onToggleFavorite,
                 colors = IconButtonDefaults.iconToggleButtonColors(
                     contentColor = favoriteButtonColor,
-                    checkedContentColor = favoriteButtonColor
-                )
+                    checkedContentColor = favoriteButtonColor,
+                ),
             )
         }
     }
 }
-
 
 private const val SongDescriptionWeight = 0.9f
 private const val FavoriteButtonWeight = 0.1f

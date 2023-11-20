@@ -16,6 +16,7 @@
 
 package com.najudoryeong.musicdo.featrue.home
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.najudoryeong.musicdo.core.domain.usecase.GetAlbumsUseCase
@@ -27,6 +28,7 @@ import com.najudoryeong.musicdo.core.domain.usecase.SetSortByUseCase
 import com.najudoryeong.musicdo.core.domain.usecase.SetSortOrderUseCase
 import com.najudoryeong.musicdo.core.domain.usecase.ToggleFavoriteSongUseCase
 import com.najudoryeong.musicdo.core.media.common.MediaConstants
+import com.najudoryeong.musicdo.core.media.service.MusicServiceConnection
 import com.najudoryeong.musicdo.core.model.SortBy
 import com.najudoryeong.musicdo.core.model.SortOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,6 +38,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@SuppressLint("UnsafeOptInUsageError")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val musicServiceConnection: MusicServiceConnection,

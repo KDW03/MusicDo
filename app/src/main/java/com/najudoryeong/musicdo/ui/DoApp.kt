@@ -37,6 +37,9 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.najudoryeong.musicdo.R
 import com.najudoryeong.musicdo.core.designsystem.componenet.DoTopAppBar
+import com.najudoryeong.musicdo.core.permission.PermissionContent
+import com.najudoryeong.musicdo.feature.player.FullPlayer
+import com.najudoryeong.musicdo.feature.player.mini.MiniPlayer
 import com.najudoryeong.musicdo.navigation.DoNavHost
 import com.najudoryeong.musicdo.ui.component.DoBottomBar
 
@@ -82,6 +85,8 @@ private fun DoAppContent(
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
 ) {
+
+    // MotionLayout에 사용할 MotionScene 컨텐츠 로드
     val motionSceneContent = remember {
         context.resources
             .openRawResource(R.raw.motion_scene)

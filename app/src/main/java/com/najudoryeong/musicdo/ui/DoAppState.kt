@@ -40,13 +40,30 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
+import com.najudoryeong.musicdo.core.permission.rememberDoPermissionState
+import com.najudoryeong.musicdo.featrue.home.navigation.HomeRoute
+import com.najudoryeong.musicdo.feature.favorite.navigation.FavoriteRoute
+import com.najudoryeong.musicdo.feature.library.model.LibraryType
+import com.najudoryeong.musicdo.feature.library.navigation.LibraryRouteWithArguments
+import com.najudoryeong.musicdo.feature.library.navigation.getLibraryType
+import com.najudoryeong.musicdo.feature.library.navigation.navigateToLibrary
+import com.najudoryeong.musicdo.feature.library.util.getTitleResource
+import com.najudoryeong.musicdo.feature.search.navigation.SearchRoute
+import com.najudoryeong.musicdo.feature.settings.navigation.SettingsRoute
 import com.najudoryeong.musicdo.navigation.TopLevelDestination
 import com.najudoryeong.musicdo.navigation.util.contains
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.max
 import kotlin.math.min
+import com.najudoryeong.musicdo.feature.favorite.R as favoriteR
+import com.najudoryeong.musicdo.feature.home.R as homeR
+import com.najudoryeong.musicdo.feature.search.R as searchR
+import com.najudoryeong.musicdo.feature.settings.R as settingsR
 
+/**
+ * 네비게이션 및 앱 전반적인 설정 상태
+ */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun rememberDoAppState(
@@ -60,6 +77,8 @@ fun rememberDoAppState(
     density: Density = LocalDensity.current,
     configuration: Configuration = LocalConfiguration.current,
 ): DoAppState {
+
+    // 화면 높이 계산 및 스와이프 가능 영역 높이 계산
     val screenHeight = with(density) { configuration.screenHeightDp.dp.toPx() }
     val swipeAreaHeight = screenHeight - SwipeAreaOffset
 
@@ -80,12 +99,15 @@ fun rememberDoAppState(
     }
 }
 
+/**
+ * 네비게이션 및 앱 전반적인 상태를 캡슐화
+ */
 @OptIn(ExperimentalMaterialApi::class)
 @Stable
 class DoAppState(
     val navController: NavHostController,
     val startDestination: TopLevelDestination,
-    val swipeableState: SwipeableState<Int>,
+    val swipeableState: SwipeableState<Int>, // using in player
     val swipeAreaHeight: Float,
     val coroutineScope: CoroutineScope,
 ) {
@@ -110,6 +132,7 @@ class DoAppState(
     private var _currentTopLevelDestination by mutableStateOf(startDestination)
     private val topLevelRoutes = listOf(HomeRoute, SearchRoute, FavoriteRoute, SettingsRoute)
 
+    // 스와이프 앵커 지점 정의
     val anchors = mapOf(0f to 0, -swipeAreaHeight to 1)
     private val swipeProgress @Composable get() = swipeableState.offset.value / -swipeAreaHeight
     val motionProgress @Composable get() = max(0f, min(swipeProgress, 1f))
@@ -131,6 +154,7 @@ class DoAppState(
             restoreState = true
         }
 
+    // 플레이어 Full Mini 전환
     fun openPlayer() = coroutineScope.launch { swipeableState.animateTo(1) }
     fun closePlayer() = coroutineScope.launch { swipeableState.animateTo(0) }
 
@@ -170,4 +194,7 @@ class DoAppState(
     fun onBackClick() = navController.popBackStack()
 }
 
+/**
+ * screenHeight - 400dp 이상으로 스크롤시 [FullPlayer] ui 노출
+ */
 private const val SwipeAreaOffset = 400

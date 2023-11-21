@@ -58,7 +58,6 @@ junit = "1.1.5"
 org-jetbrains-kotlin-android = "1.9.0"
 androidx-media3 = "1.1.1"
 androidx-constraintlayout = "1.0.1"
-renderscript-intrinsics-replacement-toolkit = "0.8-beta"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -142,7 +141,7 @@ androidx-media3-session = { module = "androidx.media3:media3-session", version.r
 androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "androidx-media3" }
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "androidx-constraintlayout" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
-
+renderscript-toolkit = "com.github.android:renderscript-intrinsics-replacement-toolkit:b6363490c3"
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

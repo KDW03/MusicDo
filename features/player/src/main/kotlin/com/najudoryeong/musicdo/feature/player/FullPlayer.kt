@@ -15,3 +15,112 @@
  */
 
 package com.najudoryeong.musicdo.feature.player
+
+import androidx.activity.compose.BackHandler
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.najudoryeong.musicdo.core.model.MusicState
+import com.najudoryeong.musicdo.core.model.PlaybackMode
+import com.najudoryeong.musicdo.core.model.Song
+import com.najudoryeong.musicdo.feature.player.component.PlayerBackdropArtworkOverlay
+import com.najudoryeong.musicdo.feature.player.component.PlayerMediaButtons
+import com.najudoryeong.musicdo.feature.player.component.PlayerTimeSlider
+import com.najudoryeong.musicdo.feature.player.component.PlayerTitleArtist
+
+@Composable
+fun FullPlayer(
+    isPlayerOpened: Boolean,
+    onSetSystemBarsLightIcons: () -> Unit,
+    onResetSystemBarsIcons: () -> Unit,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: PlayerViewModel = hiltViewModel()
+) {
+    val musicState by viewModel.musicState.collectAsStateWithLifecycle()
+    val playingQueueSongs by viewModel.playingQueueSongs.collectAsStateWithLifecycle()
+    val currentPosition by viewModel.currentPosition.collectAsStateWithLifecycle()
+    val playbackMode by viewModel.playbackMode.collectAsStateWithLifecycle()
+    val isFavorite by viewModel.isFavorite.collectAsStateWithLifecycle()
+
+    FullPlayer(
+        modifier = modifier,
+        musicState = musicState,
+        currentSong = playingQueueSongs.getOrNull(musicState.currentSongIndex),
+        playingQueueSongs = playingQueueSongs,
+        currentPosition = currentPosition,
+        playbackMode = playbackMode,
+        isFavorite = isFavorite,
+        onSkipTo = viewModel::skipTo,
+        onSkipToIndex = viewModel::skipToIndex,
+        onMediaButtonPlaybackModeClick = viewModel::onTogglePlaybackMode,
+        onMediaButtonSkipPreviousClick = viewModel::skipPrevious,
+        onMediaButtonPlayClick = viewModel::play,
+        onMediaButtonPauseClick = viewModel::pause,
+        onMediaButtonSkipNextClick = viewModel::skipNext,
+        onMediaButtonFavoriteClick = viewModel::onToggleFavorite
+    )
+
+    LaunchedEffect(isPlayerOpened, onSetSystemBarsLightIcons, onResetSystemBarsIcons) {
+        if (isPlayerOpened) onSetSystemBarsLightIcons() else onResetSystemBarsIcons()
+    }
+
+    BackHandler(enabled = isPlayerOpened, onBack = onBackClick)
+}
+
+@Composable
+private fun FullPlayer(
+    musicState: MusicState,
+    currentSong: Song?,
+    playingQueueSongs: List<Song>,
+    currentPosition: Long,
+    playbackMode: PlaybackMode,
+    isFavorite: Boolean,
+    onSkipTo: (Float) -> Unit,
+    onSkipToIndex: (Int) -> Unit,
+    onMediaButtonPlaybackModeClick: () -> Unit,
+    onMediaButtonSkipPreviousClick: () -> Unit,
+    onMediaButtonPlayClick: () -> Unit,
+    onMediaButtonPauseClick: () -> Unit,
+    onMediaButtonSkipNextClick: () -> Unit,
+    onMediaButtonFavoriteClick: (isFavorite: Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+
+    PlayerBackdropArtworkOverlay(
+        modifier = modifier,
+        playingQueueSongs = playingQueueSongs,
+        currentSongIndex = musicState.currentSongIndex,
+        currentMediaId = musicState.currentMediaId,
+        onSkipToIndex = onSkipToIndex
+    ) {
+
+
+        PlayerTitleArtist(
+            title = currentSong?.title.orEmpty(),
+            artist = currentSong?.artist.orEmpty()
+        )
+
+
+        PlayerTimeSlider(
+            currentPosition = currentPosition,
+            duration = musicState.duration,
+            onSkipTo = onSkipTo
+        )
+
+        PlayerMediaButtons(
+            isPlaying = !musicState.playWhenReady,
+            playbackMode = playbackMode,
+            isFavorite = isFavorite,
+            onPlaybackModeClick = onMediaButtonPlaybackModeClick,
+            onSkipPreviousClick = onMediaButtonSkipPreviousClick,
+            onPlayClick = onMediaButtonPlayClick,
+            onPauseClick = onMediaButtonPauseClick,
+            onSkipNextClick = onMediaButtonSkipNextClick,
+            onToggleFavorite = onMediaButtonFavoriteClick
+        )
+    }
+}

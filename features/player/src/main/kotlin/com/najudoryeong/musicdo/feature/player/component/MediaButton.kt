@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.feature.player.component
 
 import androidx.annotation.DrawableRes
@@ -40,8 +56,8 @@ import androidx.compose.ui.unit.dp
 import com.najudoryeong.musicdo.core.designsystem.componenet.FavoriteButton
 import com.najudoryeong.musicdo.core.designsystem.icon.DoIcons
 import com.najudoryeong.musicdo.core.designsystem.theme.spacing
-import com.najudoryeong.musicdo.core.model.PlaybackMode
 import com.najudoryeong.musicdo.core.media.common.R
+import com.najudoryeong.musicdo.core.model.PlaybackMode
 
 /**
  * FullPlayer MediaButtons
@@ -58,26 +74,26 @@ internal fun PlayerMediaButtons(
     onPauseClick: () -> Unit,
     onSkipNextClick: () -> Unit,
     onToggleFavorite: (isFavorite: Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly
+        horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
         PlaybackModeMediaButton(playbackMode = playbackMode, onClick = onPlaybackModeClick)
 
         MediaButton(
             iconResource = DoIcons.SkipPrevious.resourceId,
             contentDescriptionResource = R.string.skip_previous,
-            onClick = onSkipPreviousClick
+            onClick = onSkipPreviousClick,
         )
 
         // isPlaying에 따른 spring 애니메이션 효과
         Crossfade(
             targetState = isPlaying,
             animationSpec = spring(),
-            label = "CrossfadeAnimation"
+            label = "CrossfadeAnimation",
         ) { targetIsPlaying ->
             PlayPauseMediaButton(
                 isPlaying = targetIsPlaying,
@@ -86,14 +102,14 @@ internal fun PlayerMediaButtons(
                 onPlayClick = onPlayClick,
                 pauseIconResource = DoIcons.Pause.resourceId,
                 pauseContentDescriptionResource = R.string.pause,
-                onPauseClick = onPauseClick
+                onPauseClick = onPauseClick,
             )
         }
 
         MediaButton(
             iconResource = DoIcons.SkipNext.resourceId,
             contentDescriptionResource = R.string.skip_next,
-            onClick = onSkipNextClick
+            onClick = onSkipNextClick,
         )
 
         FavoriteButton(
@@ -102,8 +118,8 @@ internal fun PlayerMediaButtons(
             onToggleFavorite = onToggleFavorite,
             colors = IconButtonDefaults.iconToggleButtonColors(
                 contentColor = MediaButtonIconColor,
-                checkedContentColor = MediaButtonIconColor
-            )
+                checkedContentColor = MediaButtonIconColor,
+            ),
         )
     }
 }
@@ -118,30 +134,30 @@ private fun MediaButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     colors: IconButtonColors = IconButtonDefaults.iconButtonColors(contentColor = MediaButtonIconColor),
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
         targetValue = if (isPressed) MediaButtonPressedScale else 1f,
         animationSpec = MediaButtonPressedAnimation,
-        label = "ScaleAnimation"
+        label = "ScaleAnimation",
     )
     val alpha by animateFloatAsState(
         targetValue = if (isPressed) MediaButtonPressedAlpha else 1f,
         animationSpec = MediaButtonPressedAnimation,
-        label = "AlphaAnimation"
+        label = "AlphaAnimation",
     )
 
     IconButton(
         modifier = modifier.graphicsLayer(scaleX = scale, scaleY = scale, alpha = alpha),
         onClick = onClick,
         colors = colors,
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
     ) {
         Icon(
             modifier = Modifier.size(MediaButtonIconSize),
             painter = painterResource(id = iconResource),
-            contentDescription = stringResource(id = contentDescriptionResource)
+            contentDescription = stringResource(id = contentDescriptionResource),
         )
     }
 }
@@ -159,18 +175,18 @@ private fun PlayPauseMediaButton(
     shape: Shape = CircleShape,
     color: Color = MediaButtonIconColor,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    indication: Indication = LocalIndication.current
+    indication: Indication = LocalIndication.current,
 ) {
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
         targetValue = if (isPressed) MediaButtonPressedScale else 1f,
         animationSpec = MediaButtonPressedAnimation,
-        label = "ScaleAnimation"
+        label = "ScaleAnimation",
     )
     val alpha by animateFloatAsState(
         targetValue = if (isPressed) MediaButtonPressedAlpha else 1f,
         animationSpec = MediaButtonPressedAnimation,
-        label = "AlphaAnimation"
+        label = "AlphaAnimation",
     )
 
     Box(
@@ -180,25 +196,25 @@ private fun PlayPauseMediaButton(
             .clickable(
                 interactionSource = interactionSource,
                 indication = indication,
-                onClick = if (isPlaying) onPlayClick else onPauseClick
-            )
+                onClick = if (isPlaying) onPlayClick else onPauseClick,
+            ),
     ) {
         Icon(
             modifier = Modifier
                 .background(
                     brush = SolidColor(MediaButtonBackgroundColor),
                     shape = shape,
-                    alpha = MediaButtonBackgroundAlpha
+                    alpha = MediaButtonBackgroundAlpha,
                 )
                 .padding(MaterialTheme.spacing.medium)
                 .size(MediaButtonIconSize),
             painter = painterResource(
-                id = if (isPlaying) playIconResource else pauseIconResource
+                id = if (isPlaying) playIconResource else pauseIconResource,
             ),
             contentDescription = stringResource(
-                id = if (isPlaying) playContentDescriptionResource else pauseContentDescriptionResource
+                id = if (isPlaying) playContentDescriptionResource else pauseContentDescriptionResource,
             ),
-            tint = color
+            tint = color,
         )
     }
 }
@@ -207,7 +223,7 @@ private fun PlayPauseMediaButton(
 private fun PlaybackModeMediaButton(
     playbackMode: PlaybackMode,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val iconResource = when (playbackMode) {
         PlaybackMode.REPEAT -> DoIcons.Repeat
@@ -225,7 +241,7 @@ private fun PlaybackModeMediaButton(
         modifier = modifier,
         iconResource = iconResource,
         contentDescriptionResource = contentDescriptionResource,
-        onClick = onClick
+        onClick = onClick,
     )
 }
 

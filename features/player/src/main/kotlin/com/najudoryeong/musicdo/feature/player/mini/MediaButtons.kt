@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.feature.player.mini
 
 import androidx.annotation.DrawableRes
@@ -32,22 +48,22 @@ internal fun MiniPlayerMediaButtons(
     onPlayClick: () -> Unit,
     onPauseClick: () -> Unit,
     onSkipNextClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         MediaButton(
             iconResource = DoIcons.SkipPrevious.resourceId,
             contentDescriptionResource = mediaCommonR.string.skip_previous,
-            onClick = onSkipPreviousClick
+            onClick = onSkipPreviousClick,
         )
 
         Crossfade(
             targetState = isPlaying,
             animationSpec = spring(),
-            label = "CrossfadeAnimation"
+            label = "CrossfadeAnimation",
         ) { targetIsPlaying ->
             val iconResource = if (targetIsPlaying) {
                 DoIcons.Play.resourceId
@@ -66,14 +82,14 @@ internal fun MiniPlayerMediaButtons(
             MediaButton(
                 iconResource = iconResource,
                 contentDescriptionResource = contentDescriptionResource,
-                onClick = onClick
+                onClick = onClick,
             )
         }
 
         MediaButton(
             iconResource = DoIcons.SkipNext.resourceId,
             contentDescriptionResource = mediaCommonR.string.skip_next,
-            onClick = onSkipNextClick
+            onClick = onSkipNextClick,
         )
     }
 }
@@ -85,31 +101,31 @@ private fun MediaButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     colors: IconButtonColors = IconButtonDefaults.iconButtonColors(
-        contentColor = MaterialTheme.colorScheme.primary
+        contentColor = MaterialTheme.colorScheme.primary,
     ),
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
         targetValue = if (isPressed) MediaButtonPressedScale else 1f,
         animationSpec = MediaButtonPressedAnimation,
-        label = "ScaleAnimation"
+        label = "ScaleAnimation",
     )
     val alpha by animateFloatAsState(
         targetValue = if (isPressed) MediaButtonPressedAlpha else 1f,
         animationSpec = MediaButtonPressedAnimation,
-        label = "AlphaAnimation"
+        label = "AlphaAnimation",
     )
 
     IconButton(
         modifier = modifier.graphicsLayer(scaleX = scale, scaleY = scale, alpha = alpha),
         onClick = onClick,
         colors = colors,
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
     ) {
         Icon(
             painter = painterResource(id = iconResource),
-            contentDescription = stringResource(id = contentDescriptionResource)
+            contentDescription = stringResource(id = contentDescriptionResource),
         )
     }
 }

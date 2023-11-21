@@ -38,7 +38,7 @@ fun FullPlayer(
     onResetSystemBarsIcons: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: PlayerViewModel = hiltViewModel()
+    viewModel: PlayerViewModel = hiltViewModel(),
 ) {
     val musicState by viewModel.musicState.collectAsStateWithLifecycle()
     val playingQueueSongs by viewModel.playingQueueSongs.collectAsStateWithLifecycle()
@@ -61,7 +61,7 @@ fun FullPlayer(
         onMediaButtonPlayClick = viewModel::play,
         onMediaButtonPauseClick = viewModel::pause,
         onMediaButtonSkipNextClick = viewModel::skipNext,
-        onMediaButtonFavoriteClick = viewModel::onToggleFavorite
+        onMediaButtonFavoriteClick = viewModel::onToggleFavorite,
     )
 
     LaunchedEffect(isPlayerOpened, onSetSystemBarsLightIcons, onResetSystemBarsIcons) {
@@ -87,28 +87,24 @@ private fun FullPlayer(
     onMediaButtonPauseClick: () -> Unit,
     onMediaButtonSkipNextClick: () -> Unit,
     onMediaButtonFavoriteClick: (isFavorite: Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
     PlayerBackdropArtworkOverlay(
         modifier = modifier,
         playingQueueSongs = playingQueueSongs,
         currentSongIndex = musicState.currentSongIndex,
         currentMediaId = musicState.currentMediaId,
-        onSkipToIndex = onSkipToIndex
+        onSkipToIndex = onSkipToIndex,
     ) {
-
-
         PlayerTitleArtist(
             title = currentSong?.title.orEmpty(),
-            artist = currentSong?.artist.orEmpty()
+            artist = currentSong?.artist.orEmpty(),
         )
-
 
         PlayerTimeSlider(
             currentPosition = currentPosition,
             duration = musicState.duration,
-            onSkipTo = onSkipTo
+            onSkipTo = onSkipTo,
         )
 
         PlayerMediaButtons(
@@ -120,7 +116,7 @@ private fun FullPlayer(
             onPlayClick = onMediaButtonPlayClick,
             onPauseClick = onMediaButtonPauseClick,
             onSkipNextClick = onMediaButtonSkipNextClick,
-            onToggleFavorite = onMediaButtonFavoriteClick
+            onToggleFavorite = onMediaButtonFavoriteClick,
         )
     }
 }

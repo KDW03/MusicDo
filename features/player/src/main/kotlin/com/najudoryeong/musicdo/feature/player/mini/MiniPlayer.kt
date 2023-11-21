@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.feature.player.mini
 
 import android.net.Uri
@@ -27,7 +43,7 @@ import com.najudoryeong.musicdo.feature.player.PlayerViewModel
 fun MiniPlayer(
     onNavigateToPlayer: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: PlayerViewModel = hiltViewModel()
+    viewModel: PlayerViewModel = hiltViewModel(),
 ) {
     val musicState by viewModel.musicState.collectAsStateWithLifecycle()
     val playingQueueSongs by viewModel.playingQueueSongs.collectAsStateWithLifecycle()
@@ -44,7 +60,7 @@ fun MiniPlayer(
         onMediaButtonPlayClick = viewModel::play,
         onMediaButtonPauseClick = viewModel::pause,
         onMediaButtonSkipNextClick = viewModel::skipNext,
-        onNavigateToPlayer = onNavigateToPlayer
+        onNavigateToPlayer = onNavigateToPlayer,
     )
 }
 
@@ -58,7 +74,7 @@ private fun MiniPlayer(
     onMediaButtonPauseClick: () -> Unit,
     onMediaButtonSkipNextClick: () -> Unit,
     onNavigateToPlayer: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
@@ -66,31 +82,31 @@ private fun MiniPlayer(
                 brush = Brush.verticalGradient(
                     colors = listOf(
                         MaterialTheme.colorScheme.surfaceColorAtElevation(MiniPlayerStartElevation),
-                        MaterialTheme.colorScheme.surfaceColorAtElevation(MiniPlayerEndElevation)
-                    )
-                )
+                        MaterialTheme.colorScheme.surfaceColorAtElevation(MiniPlayerEndElevation),
+                    ),
+                ),
             )
-            .clickable(onClick = onNavigateToPlayer)
+            .clickable(onClick = onNavigateToPlayer),
     ) {
         Row(
             modifier = Modifier
                 .padding(MaterialTheme.spacing.extraSmall)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Row(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
             ) {
                 MiniPlayerArtworkImage(
                     artworkUri = currentSong?.artworkUri.orEmpty(),
-                    contentDescription = currentSong?.title
+                    contentDescription = currentSong?.title,
                 )
                 MiniPlayerTitleArtist(
                     title = currentSong?.title.orEmpty(),
-                    artist = currentSong?.artist.orEmpty()
+                    artist = currentSong?.artist.orEmpty(),
                 )
             }
             MiniPlayerMediaButtons(
@@ -98,13 +114,13 @@ private fun MiniPlayer(
                 onSkipPreviousClick = onMediaButtonSkipPreviousClick,
                 onPlayClick = onMediaButtonPlayClick,
                 onPauseClick = onMediaButtonPauseClick,
-                onSkipNextClick = onMediaButtonSkipNextClick
+                onSkipNextClick = onMediaButtonSkipNextClick,
             )
         }
         MiniPlayerTimeProgress(
             playbackState = musicState.playbackState,
             currentPosition = currentPosition,
-            duration = musicState.duration
+            duration = musicState.duration,
         )
     }
 }

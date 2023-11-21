@@ -85,7 +85,6 @@ private fun DoAppContent(
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
 ) {
-
     // MotionLayout에 사용할 MotionScene 컨텐츠 로드
     val motionSceneContent = remember {
         context.resources

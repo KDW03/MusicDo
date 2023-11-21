@@ -43,7 +43,7 @@ class PlayerViewModel @Inject constructor(
     getPlaybackModeUseCase: GetPlaybackModeUseCase,
     getFavoriteSongIdsUseCase: GetFavoriteSongIdsUseCase,
     private val setPlaybackModeUseCase: SetPlaybackModeUseCase,
-    private val toggleFavoriteSongUseCase: ToggleFavoriteSongUseCase
+    private val toggleFavoriteSongUseCase: ToggleFavoriteSongUseCase,
 ) : ViewModel() {
 
     val musicState = musicServiceConnection.musicState
@@ -51,30 +51,30 @@ class PlayerViewModel @Inject constructor(
     val playingQueueSongs = getPlayingQueueSongsUseCase().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
-        initialValue = emptyList()
+        initialValue = emptyList(),
     )
 
     val currentPosition = musicServiceConnection.currentPosition.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
-        initialValue = DEFAULT_POSITION_MS
+        initialValue = DEFAULT_POSITION_MS,
     )
 
     val playbackMode = getPlaybackModeUseCase().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
-        initialValue = PlaybackMode.REPEAT
+        initialValue = PlaybackMode.REPEAT,
     )
 
     val isFavorite = combine(
         musicState,
-        getFavoriteSongIdsUseCase()
+        getFavoriteSongIdsUseCase(),
     ) { musicState, favoriteSongIds ->
         musicState.currentMediaId in favoriteSongIds
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
-        initialValue = false
+        initialValue = false,
     )
 
     fun skipPrevious() = musicServiceConnection.skipPrevious()
@@ -99,7 +99,7 @@ class PlayerViewModel @Inject constructor(
     fun onToggleFavorite(isFavorite: Boolean) = viewModelScope.launch {
         toggleFavoriteSongUseCase(
             id = musicState.value.currentMediaId,
-            isFavorite = isFavorite
+            isFavorite = isFavorite,
         )
     }
 }

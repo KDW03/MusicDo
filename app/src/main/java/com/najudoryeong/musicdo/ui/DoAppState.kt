@@ -77,7 +77,6 @@ fun rememberDoAppState(
     density: Density = LocalDensity.current,
     configuration: Configuration = LocalConfiguration.current,
 ): DoAppState {
-
     // 화면 높이 계산 및 스와이프 가능 영역 높이 계산
     val screenHeight = with(density) { configuration.screenHeightDp.dp.toPx() }
     val swipeAreaHeight = screenHeight - SwipeAreaOffset

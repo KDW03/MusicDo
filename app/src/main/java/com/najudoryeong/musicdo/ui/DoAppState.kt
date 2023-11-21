@@ -48,6 +48,7 @@ import com.najudoryeong.musicdo.feature.library.navigation.LibraryRouteWithArgum
 import com.najudoryeong.musicdo.feature.library.navigation.getLibraryType
 import com.najudoryeong.musicdo.feature.library.navigation.navigateToLibrary
 import com.najudoryeong.musicdo.feature.library.util.getTitleResource
+import com.najudoryeong.musicdo.feature.playlist.navigation.PlaylistRoute
 import com.najudoryeong.musicdo.feature.search.navigation.SearchRoute
 import com.najudoryeong.musicdo.feature.settings.navigation.SettingsRoute
 import com.najudoryeong.musicdo.navigation.TopLevelDestination
@@ -129,7 +130,7 @@ class DoAppState(
     val topLevelDestinations = TopLevelDestination.values()
 
     private var _currentTopLevelDestination by mutableStateOf(startDestination)
-    private val topLevelRoutes = listOf(HomeRoute, SearchRoute, FavoriteRoute, SettingsRoute)
+    private val topLevelRoutes = listOf(HomeRoute, SearchRoute, FavoriteRoute, PlaylistRoute, SettingsRoute)
 
     // 스와이프 앵커 지점 정의
     val anchors = mapOf(0f to 0, -swipeAreaHeight to 1)

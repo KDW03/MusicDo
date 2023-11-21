@@ -27,6 +27,7 @@ import com.najudoryeong.musicdo.feature.settings.navigation.SettingsRoute
 import com.najudoryeong.musicdo.feature.favorite.R as favoriteR
 import com.najudoryeong.musicdo.feature.home.R as homeR
 import com.najudoryeong.musicdo.feature.search.R as searchR
+import com.najudoryeong.musicdo.feature.playlist.R as playlistR
 import com.najudoryeong.musicdo.feature.settings.R as settingsR
 enum class TopLevelDestination(
     val route: String,
@@ -51,7 +52,7 @@ enum class TopLevelDestination(
     Playlist(
         route = PlaylistRoute,
         icon = DoIcons.Playlist,
-        titleResource = favoriteR.string.favorite,
+        titleResource = playlistR.string.playlist,
     ),
     Settings(
         route = SettingsRoute,

@@ -2,7 +2,7 @@
 
 
 # MusicDo
-MusicDO is a Music Player application for Android
+MusicDO is a Stylish Music Player application for Android
 
 # Download
 Planned for release on the Play Store by December

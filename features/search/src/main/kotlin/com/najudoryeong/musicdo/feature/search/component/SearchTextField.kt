@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.feature.search.component
 
 import androidx.compose.animation.AnimatedVisibility
@@ -35,7 +51,7 @@ internal fun SearchTextField(
     query: String,
     onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    focusManager: FocusManager = LocalFocusManager.current
+    focusManager: FocusManager = LocalFocusManager.current,
 ) {
     OutlinedTextField(
         modifier = modifier
@@ -48,19 +64,19 @@ internal fun SearchTextField(
         leadingIcon = {
             Icon(
                 imageVector = DoIcons.Search.imageVector,
-                contentDescription = stringResource(id = R.string.search)
+                contentDescription = stringResource(id = R.string.search),
             )
         },
         trailingIcon = {
             AnimatedVisibility(
                 visible = query.isNotEmpty(),
                 enter = fadeIn() + scaleIn(),
-                exit = scaleOut() + fadeOut()
+                exit = scaleOut() + fadeOut(),
             ) {
                 IconButton(onClick = { onQueryChange("") }) {
                     Icon(
                         imageVector = DoIcons.Clear.imageVector,
-                        contentDescription = stringResource(id = R.string.clear)
+                        contentDescription = stringResource(id = R.string.clear),
                     )
                 }
             }
@@ -68,7 +84,7 @@ internal fun SearchTextField(
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = { focusManager.clearFocus() }),
         singleLine = true,
-        shape = MaterialTheme.shapes.extraLarge
+        shape = MaterialTheme.shapes.extraLarge,
     )
 }
 

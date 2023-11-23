@@ -38,7 +38,7 @@ internal fun SearchRoute(
     onNavigateToAlbum: (Long) -> Unit,
     onNavigateToFolder: (String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SearchViewModel = hiltViewModel()
+    viewModel: SearchViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val musicState by viewModel.musicState.collectAsStateWithLifecycle()
@@ -68,12 +68,11 @@ internal fun SearchRoute(
                     viewModel.shuffle()
                     onNavigateToPlayer()
                 },
-                onToggleFavorite = viewModel::onToggleFavorite
+                onToggleFavorite = viewModel::onToggleFavorite,
             )
         }
     }
 }
-
 
 @Composable
 private fun SearchScreen(
@@ -89,14 +88,14 @@ private fun SearchScreen(
     onPlayClick: () -> Unit,
     onShuffleClick: () -> Unit,
     onToggleFavorite: (id: String, isFavorite: Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         SearchTextField(query = uiState.query, onQueryChange = onQueryChange)
         AnimatedVisibility(
             visible = uiState.query.isNotBlank(),
             enter = MediaPagerEnterTransition,
-            exit = MediaPagerExitTransition
+            exit = MediaPagerExitTransition,
         ) {
             MediaPager(
                 songs = uiState.searchDetails.songs,
@@ -114,7 +113,7 @@ private fun SearchScreen(
                 onFolderClick = onFolderClick,
                 onPlayClick = onPlayClick,
                 onShuffleClick = onShuffleClick,
-                onToggleFavorite = onToggleFavorite
+                onToggleFavorite = onToggleFavorite,
             )
         }
     }
@@ -122,5 +121,3 @@ private fun SearchScreen(
 
 private val MediaPagerEnterTransition = fadeIn()
 private val MediaPagerExitTransition = fadeOut()
-
-

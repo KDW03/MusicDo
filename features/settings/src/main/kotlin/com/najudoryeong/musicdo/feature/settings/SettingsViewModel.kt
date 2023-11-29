@@ -16,9 +16,53 @@
 
 package com.najudoryeong.musicdo.feature.settings
 
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.najudoryeong.musicdo.core.designsystem.theme.supportsDynamicTheming
+import com.najudoryeong.musicdo.core.domain.usecase.GetPrivacyPolicyUrlUseCase
+import com.najudoryeong.musicdo.core.domain.usecase.GetRepoUrlUseCase
+import com.najudoryeong.musicdo.core.domain.usecase.GetUserDataUseCase
+import com.najudoryeong.musicdo.core.domain.usecase.GetVersionUseCase
+import com.najudoryeong.musicdo.core.domain.usecase.SetDarkThemeConfigUseCase
+import com.najudoryeong.musicdo.core.domain.usecase.SetDynamicColorUseCase
+import com.najudoryeong.musicdo.core.model.DarkThemeConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor() : ViewModel()
+class SettingsViewModel @Inject constructor(
+    getUserDataUseCase: GetUserDataUseCase,
+    getRepoUrlUseCase: GetRepoUrlUseCase,
+    getPrivacyPolicyUrlUseCase: GetPrivacyPolicyUrlUseCase,
+    getVersionUseCase: GetVersionUseCase,
+    private val setDynamicColorUseCase: SetDynamicColorUseCase,
+    private val setDarkThemeConfigUseCase: SetDarkThemeConfigUseCase
+) : ViewModel() {
+
+    val uiState = getUserDataUseCase()
+        .map { userData ->
+            SettingsUiState.Success(
+                supportsDynamicTheming = supportsDynamicTheming(),
+                useDynamicColor = userData.useDynamicColor,
+                darkThemeConfig = userData.darkThemeConfig,
+                repoUrl = getRepoUrlUseCase().toUri(),
+                privacyPolicyUrl = getPrivacyPolicyUrlUseCase().toUri(),
+                version = getVersionUseCase()
+            )
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = SettingsUiState.Loading
+        )
+
+    fun setDynamicColor(useDynamicColor: Boolean) =
+        viewModelScope.launch { setDynamicColorUseCase(useDynamicColor) }
+
+    fun setDarkThemeConfig(darkThemeConfig: DarkThemeConfig) =
+        viewModelScope.launch { setDarkThemeConfigUseCase(darkThemeConfig) }
+}

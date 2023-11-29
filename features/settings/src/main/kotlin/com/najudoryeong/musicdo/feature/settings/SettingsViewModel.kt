@@ -41,7 +41,7 @@ class SettingsViewModel @Inject constructor(
     getPrivacyPolicyUrlUseCase: GetPrivacyPolicyUrlUseCase,
     getVersionUseCase: GetVersionUseCase,
     private val setDynamicColorUseCase: SetDynamicColorUseCase,
-    private val setDarkThemeConfigUseCase: SetDarkThemeConfigUseCase
+    private val setDarkThemeConfigUseCase: SetDarkThemeConfigUseCase,
 ) : ViewModel() {
 
     val uiState = getUserDataUseCase()
@@ -52,12 +52,12 @@ class SettingsViewModel @Inject constructor(
                 darkThemeConfig = userData.darkThemeConfig,
                 repoUrl = getRepoUrlUseCase().toUri(),
                 privacyPolicyUrl = getPrivacyPolicyUrlUseCase().toUri(),
-                version = getVersionUseCase()
+                version = getVersionUseCase(),
             )
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
-            initialValue = SettingsUiState.Loading
+            initialValue = SettingsUiState.Loading,
         )
 
     fun setDynamicColor(useDynamicColor: Boolean) =

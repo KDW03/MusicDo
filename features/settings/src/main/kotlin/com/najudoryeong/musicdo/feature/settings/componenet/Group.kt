@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 KDW03
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.najudoryeong.musicdo.feature.settings.componenet
 
 import androidx.annotation.StringRes
@@ -18,7 +34,7 @@ import com.najudoryeong.musicdo.core.designsystem.theme.spacing
 
 internal fun LazyListScope.group(
     @StringRes titleResource: Int,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) = item {
     Group(titleResource = titleResource, content = content)
 }
@@ -27,24 +43,24 @@ internal fun LazyListScope.group(
 private fun Group(
     @StringRes titleResource: Int,
     modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     OutlinedCard(
         modifier = modifier
             .padding(MaterialTheme.spacing.small)
             .fillMaxWidth(),
-        border = DoOutlinedBorder
+        border = DoOutlinedBorder,
     ) {
         Column(
             modifier = Modifier.padding(vertical = MaterialTheme.spacing.medium),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
         ) {
             SingleLineText(
                 modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium),
                 text = stringResource(id = titleResource),
                 shouldUseMarquee = true,
                 style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
             )
             content()
         }

@@ -30,7 +30,9 @@ import com.najudoryeong.musicdo.core.designsystem.componenet.RadioButtonText
 import com.najudoryeong.musicdo.core.designsystem.icon.DoIcons
 import com.najudoryeong.musicdo.core.designsystem.theme.spacing
 import com.najudoryeong.musicdo.core.model.DarkThemeConfig
-import com.najudoryeong.musicdo.core.model.DarkThemeConfig.*
+import com.najudoryeong.musicdo.core.model.DarkThemeConfig.DARK
+import com.najudoryeong.musicdo.core.model.DarkThemeConfig.FOLLOW_SYSTEM
+import com.najudoryeong.musicdo.core.model.DarkThemeConfig.LIGHT
 import com.najudoryeong.musicdo.feature.settings.componenet.InfoText
 import com.najudoryeong.musicdo.feature.settings.componenet.RadioButtonGroup
 import com.najudoryeong.musicdo.feature.settings.componenet.UrlText
@@ -77,50 +79,50 @@ private fun SettingsScreenContent(
     uiState: SettingsUiState.Success,
     onChangeDynamicColor: (useDynamicColor: Boolean) -> Unit,
     onChangeDarkThemeConfig: (darkThemeConfig: DarkThemeConfig) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.smallMedium)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.smallMedium),
     ) {
         group(titleResource = R.string.appearance) {
             if (uiState.supportsDynamicTheming) {
                 RadioButtonGroup(
                     icon = DoIcons.Palette,
-                    titleRes = R.string.use_dynamic_color
+                    titleRes = R.string.use_dynamic_color,
                 ) {
                     RadioButtonText(
                         textRes = R.string.yes,
                         isSelected = uiState.useDynamicColor,
-                        onClick = { onChangeDynamicColor(true) }
+                        onClick = { onChangeDynamicColor(true) },
                     )
                     RadioButtonText(
                         textRes = R.string.no,
                         isSelected = !uiState.useDynamicColor,
-                        onClick = { onChangeDynamicColor(false) }
+                        onClick = { onChangeDynamicColor(false) },
                     )
                 }
             }
 
             RadioButtonGroup(
                 icon = DoIcons.DarkMode,
-                titleRes = R.string.dark_mode_preference
+                titleRes = R.string.dark_mode_preference,
             ) {
                 RadioButtonText(
                     textRes = R.string.system_default,
                     isSelected = uiState.darkThemeConfig == FOLLOW_SYSTEM,
-                    onClick = { onChangeDarkThemeConfig(FOLLOW_SYSTEM) }
+                    onClick = { onChangeDarkThemeConfig(FOLLOW_SYSTEM) },
                 )
                 RadioButtonText(
                     textRes = R.string.light,
                     isSelected = uiState.darkThemeConfig == LIGHT,
-                    onClick = { onChangeDarkThemeConfig(LIGHT) }
+                    onClick = { onChangeDarkThemeConfig(LIGHT) },
                 )
                 RadioButtonText(
                     textRes = R.string.dark,
                     isSelected = uiState.darkThemeConfig == DARK,
-                    onClick = { onChangeDarkThemeConfig(DARK) }
+                    onClick = { onChangeDarkThemeConfig(DARK) },
                 )
             }
         }
@@ -129,24 +131,18 @@ private fun SettingsScreenContent(
             UrlText(
                 icon = DoIcons.GitHub,
                 textResource = R.string.source_code_github,
-                url = uiState.repoUrl
+                url = uiState.repoUrl,
             )
             UrlText(
                 icon = DoIcons.Security,
                 textResource = R.string.privacy_policy,
-                url = uiState.privacyPolicyUrl
+                url = uiState.privacyPolicyUrl,
             )
             InfoText(
                 icon = DoIcons.Info,
                 textResource = R.string.version,
-                info = uiState.version
+                info = uiState.version,
             )
         }
     }
 }
-
-
-
-
-
-

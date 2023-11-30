@@ -16,14 +16,89 @@
 
 package com.najudoryeong.musicdo.feature
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.najudoryeong.musicdo.core.designsystem.theme.spacing
+import com.najudoryeong.musicdo.core.model.MusicState
+import com.najudoryeong.musicdo.core.model.SortBy
+import com.najudoryeong.musicdo.core.model.SortOrder
+import com.najudoryeong.musicdo.core.ui.component.OutlinedMediaHeader
+import com.najudoryeong.musicdo.core.ui.component.Songs
 
 @Composable
 internal fun FavoriteRoute(
     onNavigateToPlayer: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: FavoriteViewModel = hiltViewModel(),
+    viewModel: FavoriteViewModel = hiltViewModel()
 ) {
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val musicState by viewModel.musicState.collectAsStateWithLifecycle()
+
+    when (val uiState = state) {
+        FavoriteUiState.Loading -> Unit
+        is FavoriteUiState.Success -> {
+            FavoriteScreen(
+                modifier = modifier,
+                uiState = uiState,
+                musicState = musicState,
+                onChangeSortOrder = viewModel::onChangeSortOrder,
+                onChangeSortBy = viewModel::onChangeSortBy,
+                onSongClick = { startIndex ->
+                    viewModel.play(startIndex)
+                    onNavigateToPlayer()
+                },
+                onPlayClick = {
+                    viewModel.play()
+                    onNavigateToPlayer()
+                },
+                onShuffleClick = {
+                    viewModel.shuffle()
+                    onNavigateToPlayer()
+                },
+                onToggleFavorite = viewModel::onToggleFavorite
+            )
+        }
+    }
+}
+
+@Composable
+private fun FavoriteScreen(
+    uiState: FavoriteUiState.Success,
+    musicState: MusicState,
+    onChangeSortOrder: (SortOrder) -> Unit,
+    onChangeSortBy: (SortBy) -> Unit,
+    onSongClick: (Int) -> Unit,
+    onPlayClick: () -> Unit,
+    onShuffleClick: () -> Unit,
+    onToggleFavorite: (id: String, isFavorite: Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier.fillMaxSize()) {
+        AnimatedVisibility(visible = uiState.songs.isNotEmpty()) {
+            OutlinedMediaHeader(
+                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.small),
+                sortOrder = uiState.sortOrder,
+                sortBy = uiState.sortBy,
+                onChangeSortOrder = onChangeSortOrder,
+                onChangeSortBy = onChangeSortBy,
+                onPlayClick = onPlayClick,
+                onShuffleClick = onShuffleClick
+            )
+        }
+
+        Songs(
+            songs = uiState.songs,
+            currentPlayingSongId = musicState.currentMediaId,
+            onClick = onSongClick,
+            onToggleFavorite = onToggleFavorite
+        )
+    }
 }

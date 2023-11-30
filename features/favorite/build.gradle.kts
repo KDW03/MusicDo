@@ -22,3 +22,8 @@ plugins {
 android {
     namespace = "com.najudoryeong.musicdo.feature.favorite"
 }
+
+
+dependencies {
+    implementation(project(":core:media-service"))
+}
